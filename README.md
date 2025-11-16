@@ -1,263 +1,394 @@
-# Nexal - Next.js Starter Template
+<div align="center">
 
-Ein vollständiges Next.js Starter-Template mit Authentifizierung, Datenbank, Stripe-Integration und Admin-Dashboard.
+# 🚀 Nexal
 
-## 🚀 Features
+### Production-Ready Next.js Starter Template
 
-- ✅ **Next.js 15** mit App Router und TypeScript
-- 🔐 **Better-Auth** - Moderne Authentifizierung mit E-Mail/Passwort
-- 🗄️ **Prisma ORM** - Type-safe Datenbankzugriff
-- 💾 **MongoDB** - NoSQL Datenbank mit Docker-Setup
-- 💳 **Stripe Integration** - Zahlungen und Abonnements
-- 🎨 **Tailwind CSS** - Utility-First CSS Framework
-- 👨‍💼 **Admin Dashboard** - User-, Produkt- und Coupon-Verwaltung
-- 🐳 **Docker Support** - Einfaches Setup mit Docker Compose
+*Von der Idee zum Live-Projekt in Minuten*
 
-## 📋 Voraussetzungen
+[![npm version](https://img.shields.io/npm/v/nexal.svg)](https://www.npmjs.com/package/nexal)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-- Node.js 18+ 
-- Docker und Docker Compose
-- Stripe Account (für Zahlungen)
+[Features](#-features) • [Schnellstart](#-schnellstart) • [Dokumentation](#-setup) • [Demo](#-login)
 
-## 🛠️ Installation
+</div>
 
-### 1. Repository klonen
+---
+
+## ⚡ Schnellstart
 
 ```bash
-git clone https://github.com/Jonasppxx/nexal.git
-cd nexal
+npx nexal
 ```
 
-### 2. Dependencies installieren
+**Das war's!** Ein vollständiges, produktionsreifes Next.js Projekt mit Auth, DB, Payments & Admin.
 
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🏗️ **Foundation**
+- ⚡ **Next.js 15** - App Router & Server Components
+- 📘 **TypeScript** - Type-safe development
+- 🎨 **Tailwind CSS** - Modern styling
+- 🐳 **Docker** - Containerized database
+
+</td>
+<td width="50%">
+
+### 🔐 **Backend**
+- 🔒 **Better-Auth** - Secure authentication
+- 🗄️ **Prisma ORM** - Type-safe database
+- 💾 **MongoDB** - NoSQL with replica sets
+- 💳 **Stripe** - Payments & subscriptions
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 👨‍💼 **Admin Dashboard**
+- 👥 User management
+- 📦 Product & subscription management
+- 🎫 Coupon system
+- 📊 Overview & analytics
+
+</td>
+<td width="50%">
+
+### 🚀 **Ready to Deploy**
+- ✅ Production optimized
+- ✅ Security best practices
+- ✅ SEO configured
+- ✅ Performance optimized
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📦 Setup
+
+### **Installation in 4 Schritten**
+
+<table>
+<tr>
+<td>
+
+**1️⃣ Initialisieren**
 ```bash
-npm install
+npx nexal
+cd dein-projekt
 ```
 
-### 3. Umgebungsvariablen einrichten
+</td>
+<td>
 
-Erstelle eine `.env` Datei im Root-Verzeichnis:
-
+**2️⃣ Environment**
 ```bash
+# .env Datei bearbeiten
+# Siehe unten für Details
+```
+
+</td>
+</tr>
+<tr>
+<td>
+
+**3️⃣ Datenbank**
+```bash
+docker-compose up -d
+npm run prisma:prepare
+```
+
+</td>
+<td>
+
+**4️⃣ Starten**
+```bash
+npm run init:admin
+npm run dev
+```
+
+</td>
+</tr>
+</table>
+
+### **Environment Variables**
+
+Erstelle eine `.env` Datei:
+
+```env
 # Database
 DATABASE_URL="mongodb://admin:password@localhost:27017/nexal?authSource=admin&replicaSet=rs0"
 
-# Better-Auth
-BETTER_AUTH_SECRET="dein-super-geheimer-schlüssel-mindestens-32-zeichen"
+# Auth
+BETTER_AUTH_SECRET="your-super-secret-min-32-chars"
 BETTER_AUTH_URL="http://localhost:3000"
 
-# Stripe (optional, für Zahlungen)
+# Stripe (optional)
 STRIPE_SECRET_KEY="sk_test_..."
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
 STRIPE_WEBHOOK_SECRET="whsec_..."
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-### 4. Datenbank starten
+<details>
+<summary><b>🌐 MongoDB Atlas statt Docker verwenden</b></summary>
+
+```env
+DATABASE_URL="mongodb+srv://user:pass@cluster.mongodb.net/db?retryWrites=true&w=majority"
+```
+Dann kannst du `docker-compose up -d` überspringen.
+
+</details>
+
+<details>
+<summary><b>🔑 Default Admin Credentials</b></summary>
+
+Nach `npm run init:admin`:
+- **Email:** `admin@example.com`
+- **Password:** `admin123`
+
+⚠️ **Bitte ändern nach dem ersten Login!**
+
+</details>
+
+---
+
+## 🎯 Was bekommst du?
+
+```
+📦 Nexal Project
+│
+├── 🔐 Authentication
+│   ├── Email/Password login
+│   ├── Secure sessions
+│   └── Protected routes
+│
+├── 👨‍💼 Admin Dashboard
+│   ├── User management
+│   ├── Products & subscriptions
+│   └── Coupon system
+│
+├── 💳 Stripe Payments
+│   ├── One-time payments
+│   ├── Subscriptions
+│   ├── Coupons
+│   └── Webhooks
+│
+└── 🗄️ Database
+    ├── Prisma ORM
+    ├── MongoDB
+    └── Migrations
+```
+
+**Perfekt für:**
+- 🚀 Schnelle Prototypen
+- 💼 SaaS-Anwendungen  
+- 🛒 E-Commerce
+- 📱 Full-Stack Apps
+
+---
+
+## 📂 Struktur
+
+```
+src/
+├── app/
+│   ├── api/          # API Routes
+│   ├── admin/        # Admin Dashboard
+│   └── login/        # Auth Pages
+│
+├── components/       # React Components
+├── lib/             # Utils & Config
+└── prisma/          # Database Schema
+```
+
+---
+
+## 🔑 Login
+
+**URL:** [localhost:3000/login](http://localhost:3000/login)
+
+Default Admin:
+- Email: `admin@example.com`  
+- Password: `admin123`
+
+---
+
+## 👨‍💼 Admin Features
+
+Nach dem Login unter `/admin`:
+
+| Feature | Beschreibung |
+|---------|--------------|
+| **👥 Users** | Benutzerverwaltung & Rollen |
+| **📦 Products** | Produkte & Abo-Pläne erstellen |
+| **🎫 Coupons** | Rabattcodes verwalten |
+| **📊 Overview** | Dashboard & Statistiken |
+
+---
+
+## 💳 Stripe Setup
+
+<details>
+<summary><b>Schritt-für-Schritt Anleitung</b></summary>
+
+### 1. API Keys holen
+
+- Gehe zu [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+- Kopiere **Publishable Key** (`pk_test_...`)
+- Kopiere **Secret Key** (`sk_test_...`)
+- Füge beide in `.env` ein
+
+### 2. Webhooks einrichten
+
+- Gehe zu [Stripe Webhooks](https://dashboard.stripe.com/webhooks)
+- Füge Endpoint hinzu: `https://deine-domain.com/api/stripe/webhook`
+- Events auswählen: `checkout.session.completed`, `customer.subscription.*`
+- Webhook Secret kopieren → `.env`
+
+Mehr Details: [STRIPE_SETUP.md](./STRIPE_SETUP.md)
+
+</details>
+
+---
+
+## 📜 Commands
 
 ```bash
-docker-compose up -d
-```
+# Development
+npm run dev              # Start dev server
+npm run build            # Build für production
+npm run start            # Start production server
 
-Dies startet MongoDB mit Replica Set Unterstützung.
-
-### 5. Datenbank vorbereiten
-
-```bash
-npm run prisma:prepare
-```
-
-Dieser Befehl führt aus:
-- `prisma generate` - Generiert den Prisma Client
-- `prisma db push` - Erstellt die Datenbankstruktur
-
-### 6. Admin-User erstellen
-
-```bash
-npm run init:admin
-```
-
-Erstellt einen Admin-User mit:
-- Email: `admin@example.com`
-- Passwort: `admin123`
-- Role: `admin`
-
-### 7. Entwicklungsserver starten
-
-```bash
-npm run dev
-```
-
-Die Anwendung läuft nun auf [http://localhost:3000](http://localhost:3000)
-
-## 📁 Projektstruktur
-
-```
-nexal/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── api/               # API Routes
-│   │   │   ├── auth/         # Authentifizierung
-│   │   │   ├── admin/        # Admin API Endpoints
-│   │   │   ├── stripe/       # Stripe Integration
-│   │   │   └── ...
-│   │   ├── admin/            # Admin Dashboard
-│   │   ├── login/            # Login Seite
-│   │   └── ...
-│   ├── components/            # React Komponenten
-│   │   ├── auth/             # Auth Komponenten
-│   │   ├── stripe/           # Stripe Komponenten
-│   │   └── ...
-│   ├── lib/                   # Utility Bibliotheken
-│   │   ├── auth.ts           # Better-Auth Konfiguration
-│   │   ├── stripe.ts         # Stripe Konfiguration
-│   │   └── prisma/
-│   └── prisma/
-│       └── schema.prisma      # Datenbankschema
-├── scripts/                   # Hilfs-Scripts
-├── docker-compose.yml         # Docker Konfiguration
-└── package.json
-```
-
-## 🔑 Authentifizierung
-
-Das Template nutzt [Better-Auth](https://better-auth.com) für die Authentifizierung:
-
-- E-Mail/Passwort Login
-- Session Management
-- Passwort-Hashing mit bcrypt
-- Type-safe Auth Client
-
-### Login
-
-Besuche [http://localhost:3000/login](http://localhost:3000/login) und melde dich mit dem Admin-Account an.
-
-## 👨‍💼 Admin Dashboard
-
-Nach dem Login als Admin erreichst du das Dashboard unter `/admin`:
-
-- **Users** - Benutzerverwaltung
-- **Products** - Produkte und Abonnements verwalten
-- **Coupons** - Rabattcodes erstellen und verwalten
-
-## 💳 Stripe Integration
-
-Das Template unterstützt:
-
-- **Einmalige Zahlungen** - Produkte kaufen
-- **Abonnements** - Monatliche/Jährliche Abos
-- **Coupons** - Rabattcodes
-- **Webhook Handling** - Automatische Zahlungsbestätigungen
-
-Detaillierte Anleitung: siehe [STRIPE_SETUP.md](./STRIPE_SETUP.md)
-
-## 🗄️ Datenbank Schema
-
-### Hauptmodelle
-
-- **User** - Benutzerkonten mit Rolle (user/admin)
-- **Session** - Aktive Sessions
-- **Account** - Auth Provider Accounts
-- **Product** - Produkte und Abonnements
-- **Purchase** - Einmalige Käufe
-- **Subscription** - Aktive Abonnements
-- **Coupon** - Rabattcodes
-- **Post** - Beispiel Content Model
-
-## 📜 Verfügbare Scripts
-
-```bash
-# Entwicklung
-npm run dev              # Entwicklungsserver starten
-
-# Datenbank
-npm run prisma:prepare   # Prisma generieren & DB pushen
-
-# Build
-npm run build            # Production Build erstellen
-npm run start            # Production Server starten
+# Database  
+npm run prisma:prepare   # Generate client & push schema
 
 # Admin
-npm run init:admin       # Admin User erstellen
-npm run init:admin-api   # Admin via API erstellen
+npm run init:admin       # Create admin user
+npm run init:admin-api   # Create via API
 
-# Code Quality
-npm run lint             # Code Linting
+# Utils
+npm run lint             # Lint code
 ```
+
+---
 
 ## 🐳 Docker
 
-### MongoDB starten
-
 ```bash
+# Start MongoDB
 docker-compose up -d
-```
 
-### MongoDB stoppen
-
-```bash
+# Stop MongoDB  
 docker-compose down
-```
 
-### Logs anzeigen
-
-```bash
+# View logs
 docker-compose logs -f mongodb
 ```
+
+---
 
 ## 🌐 Deployment
 
 ### Vorbereitung
 
-1. Setze `BETTER_AUTH_URL` auf deine Production URL
-2. Nutze Production Stripe Keys (statt Test Keys)
-3. Konfiguriere Stripe Webhooks für deine Domain
-4. Sichere deine MongoDB Instanz
-5. Nutze starke Secrets für `BETTER_AUTH_SECRET`
+- [ ] `BETTER_AUTH_URL` auf Production URL setzen
+- [ ] Production Stripe Keys verwenden
+- [ ] Stripe Webhooks für Domain konfigurieren
+- [ ] MongoDB absichern (Atlas empfohlen)
+- [ ] Starke Secrets generieren
+- [ ] HTTPS aktivieren
 
-### Build erstellen
+### Deploy
 
 ```bash
 npm run build
-```
-
-### Production starten
-
-```bash
 npm start
 ```
 
-## 🔒 Sicherheit
+---
 
-- ✅ Passwörter werden mit bcrypt gehasht
-- ✅ Session-basierte Authentifizierung
-- ✅ CSRF-Schutz durch Better-Auth
-- ✅ Role-based Access Control (RBAC)
-- ⚠️ Ändere alle Secrets für Production!
-- ⚠️ Aktiviere HTTPS für Production
+## 💡 Tipps & Tricks
 
-## 🤝 Beitragen
+<details>
+<summary><b>Projekt ohne Stripe nutzen</b></summary>
 
-Contributions sind willkommen! Bitte erstelle ein Issue oder Pull Request.
+Stripe ist optional! Lass die Keys einfach leer und entferne Stripe-Komponenten bei Bedarf.
 
-## 📄 Lizenz
+</details>
 
-MIT License - siehe LICENSE Datei für Details.
+<details>
+<summary><b>Schema erweitern</b></summary>
 
-## 👤 Autor
+1. Bearbeite `src/prisma/schema.prisma`
+2. Run `npm run prisma:prepare`
+3. Nutze neue Models in deinem Code
 
-**jonasboos**
+</details>
 
-- GitHub: [@jonasboos](https://github.com/jonasboos)
+<details>
+<summary><b>Neue API Route hinzufügen</b></summary>
 
-## 🙏 Credits
+Erstelle Datei in `src/app/api/dein-endpoint/route.ts`:
 
-- [Next.js](https://nextjs.org/)
-- [Better-Auth](https://better-auth.com/)
-- [Prisma](https://www.prisma.io/)
-- [Stripe](https://stripe.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
+```ts
+export async function GET() {
+  return Response.json({ message: "Hello!" })
+}
+```
+
+</details>
 
 ---
 
-⭐ Wenn dir dieses Template gefällt, gib ihm einen Stern auf GitHub!
+## 🔒 Sicherheit
+
+| Feature | Status |
+|---------|--------|
+| Bcrypt Password Hashing | ✅ |
+| Session Management | ✅ |
+| CSRF Protection | ✅ |
+| Role-Based Access | ✅ |
+
+**Production Checklist:**
+- ⚠️ Alle Secrets ändern
+- ⚠️ HTTPS aktivieren
+- ⚠️ Admin Passwort ändern
+- ⚠️ Environment Variables sichern
+
+---
+
+<div align="center">
+
+## 🤝 Contributing
+
+Contributions welcome! Feel free to open issues or PRs.
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE)
+
+## 👤 Author
+
+**jonasboos**
+
+[![GitHub](https://img.shields.io/badge/GitHub-jonasboos-black?logo=github)](https://github.com/jonasboos)
+
+## 🙏 Built With
+
+[Next.js](https://nextjs.org/) • [Better-Auth](https://better-auth.com/) • [Prisma](https://prisma.io/) • [Stripe](https://stripe.com/) • [Tailwind](https://tailwindcss.com/)
+
+---
+
+⭐ **Star this repo if you find it helpful!**
+
+</div>
+````
