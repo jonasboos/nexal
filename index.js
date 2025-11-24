@@ -72,7 +72,7 @@ function copyTemplates(templatePath, projectPath) {
     'tailwind.config.ts',
     'postcss.config.mjs',
     'eslint.config.mjs',
-    // Additional deployment helpers (not part of published package 'file')
+    // Additional deployment helpers (not part of published package 'files')
     'upload-env-secrets.ps1',
     'upload-env-secrets.sh',
     '.github',
