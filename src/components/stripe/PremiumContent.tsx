@@ -60,7 +60,7 @@ export default function PremiumContent({
       return <>{loadingContent}</>;
     }
       return (
-        <div className="min-h-screen bg-background text-foreground flex items-center justify-center transition-colors">
+        <div className="h-[calc(100vh-6rem)] flex items-center justify-center bg-background text-foreground transition-colors">
           <p className="text-muted">Loading...</p>
         </div>
       );
@@ -72,7 +72,7 @@ export default function PremiumContent({
     }
 
     return (
-        <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 transition-colors">
+      <div className="h-[calc(100vh-6rem)] flex items-center justify-center bg-background text-foreground px-4 transition-colors">
           <div className="max-w-md text-center">
             <div className="bg-card rounded-lg p-8 border border-card shadow-md dark:shadow-none transition-colors">
             <div className="text-6xl mb-4">🔒</div>

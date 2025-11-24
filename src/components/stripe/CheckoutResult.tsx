@@ -15,9 +15,9 @@ export default function CheckoutResult({
   returnUrl = '/',
   returnLabel = 'Go to Homepage'
 }: CheckoutResultProps) {
-  if (success) {
+    if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors">
+      <div className="flex h-[calc(100vh-6rem)] items-center justify-center bg-background text-foreground transition-colors">
         <div className="bg-card p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors border border-card">
           <div className="mb-6">
             <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -66,7 +66,7 @@ export default function CheckoutResult({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors">
+    <div className="flex h-[calc(100vh-6rem)] items-center justify-center bg-background text-foreground transition-colors">
     <div className="bg-card p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors border border-card">
         <div className="mb-6">
           <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-4">

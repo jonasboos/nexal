@@ -44,7 +44,7 @@ function ResetPasswordInner() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="flex h-[calc(100vh-6rem)] items-center justify-center bg-background px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-foreground">Set New Password</h2>
@@ -108,7 +108,7 @@ function ResetPasswordInner() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={<div className="flex h-[calc(100vh-6rem)] items-center justify-center">Loading...</div>}>
       <ResetPasswordInner />
     </Suspense>
   );

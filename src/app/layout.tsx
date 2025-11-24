@@ -24,7 +24,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="pt-24 grow">
+          {/*
+            Removed top padding here so per-page background elements can extend
+            to the very top of the viewport and be visible behind the fixed
+            navbar. Pages that need spacing below the navbar should apply
+            their own top padding (e.g. `pt-24`) to their content wrapper.
+          */}
+          <main className="grow">
             {children}
           </main>
           <Footer />

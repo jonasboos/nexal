@@ -1,6 +1,6 @@
 export default function ImpressumPage() {
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background pt-24 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-card rounded-lg shadow-sm p-8 border border-border">
         <h1 className="text-3xl font-bold mb-8 text-foreground">Impressum</h1>
         

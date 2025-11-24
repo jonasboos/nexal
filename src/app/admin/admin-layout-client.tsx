@@ -78,7 +78,7 @@ export default function AdminLayoutClient({ children, session }: AdminLayoutClie
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 min-h-screen">
+      <main className="ml-64 min-h-screen pt-24">
         {children}
       </main>
     </div>

@@ -4,8 +4,7 @@ import { useSession, signOut } from "@/src/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
-import { useEffect, useState } from "react";
-import { cn } from "@/src/lib/utils";
+
 
 export default function Navbar() {
   const { data: session, isPending } = useSession();

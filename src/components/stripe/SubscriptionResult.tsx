@@ -10,7 +10,7 @@ interface SubscriptionResultProps {
 export default function SubscriptionResult({ success, sessionId }: SubscriptionResultProps) {
   if (success) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 transition-colors">
+      <div className="h-[calc(100vh-6rem)] flex items-center justify-center bg-background text-foreground px-4 transition-colors">
         <div className="max-w-md text-center">
           <div className="bg-card rounded-lg p-8 border border-green-200 dark:border-green-700 shadow-md dark:shadow-none transition-colors">
             <div className="text-6xl mb-4">🎉</div>
@@ -48,8 +48,8 @@ export default function SubscriptionResult({ success, sessionId }: SubscriptionR
     );
   }
 
-  return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 transition-colors">
+    return (
+      <div className="h-[calc(100vh-6rem)] flex items-center justify-center bg-background text-foreground px-4 transition-colors">
       <div className="max-w-md text-center">
         <div className="bg-card rounded-lg p-8 border border-yellow-200 dark:border-yellow-700 shadow-md dark:shadow-none transition-colors">
           <div className="text-6xl mb-4">❌</div>
