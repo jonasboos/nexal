@@ -6,6 +6,40 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 // ============================================================================
+// Console Output Utilities
+// ============================================================================
+const colors = {
+  reset: '\x1b[0m',
+  bright: '\x1b[1m',
+  dim: '\x1b[2m',
+  cyan: '\x1b[36m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  red: '\x1b[31m',
+};
+
+function clearScreen() {
+  console.clear();
+}
+
+function status(message) {
+  console.log(`${colors.bright}${colors.cyan}▶${colors.reset} ${message}`);
+}
+
+function success(message) {
+  console.log(`${colors.bright}${colors.green}✓${colors.reset} ${message}`);
+}
+
+function warn(message) {
+  console.log(`${colors.yellow}⚠${colors.reset} ${message}`);
+}
+
+function section(title) {
+  console.log(`\n${colors.bright}${title}${colors.reset}`);
+  console.log(colors.dim + '─'.repeat(50) + colors.reset);
+}
+
+// ============================================================================
 // File System Utilities (from lib/fs-utils.js)
 // ============================================================================
 
@@ -166,12 +200,13 @@ const projectName = process.argv[2] || ".";
 const targetDir = path.resolve(process.cwd(), projectName);
 
 async function main() {
-  console.log(`Erstelle Projekt: ${projectName}`);
+  clearScreen();
+  section(`🚀 Projet Setup: ${projectName}`);
 
   const projectPath = targetDir;
 
   if (projectName !== "." && require('fs').existsSync(projectPath)) {
-    console.error(`Error: Directory already exists: ${projectName}`);
+    console.error(`${colors.red}✗ Error: Directory already exists: ${projectName}${colors.reset}`);
     process.exit(1);
   }
 
@@ -179,6 +214,8 @@ async function main() {
     ensureDir(projectPath);
     // Template source directory
     const templatePath = __dirname;
+
+    status('Copying template files...');
 
     // Prioritized copy: ensure docker-compose and Dockerfile exist in the
     // target project immediately so attempts to run `docker compose` won't
@@ -190,10 +227,9 @@ async function main() {
         const dest = path.join(projectPath, f);
         if (fs.existsSync(src)) {
           copyFileSync(src, dest);
-          console.log(`Copied ${f} (priority).`);
         }
       } catch (e) {
-        console.warn(`Could not copy prioritized file ${f}: ${e && e.message ? e.message : e}`);
+        // silent
       }
     }
 
@@ -204,10 +240,9 @@ async function main() {
       if (fs.existsSync(workflowSrc)) {
         ensureDir(path.dirname(workflowDest));
         copyFileSync(workflowSrc, workflowDest);
-        console.log('GitHub Actions workflow created (.github/workflows/deploy.yml)');
       }
     } catch (e) {
-      console.warn('Could not copy GitHub workflow:', e && e.message ? e.message : e);
+      // silent
     }
 
     // Copy deployment scripts (PowerShell and Bash)
@@ -216,30 +251,25 @@ async function main() {
       const psScriptDest = path.join(projectPath, 'upload-env-secrets.ps1');
       if (fs.existsSync(psScriptSrc)) {
         copyFileSync(psScriptSrc, psScriptDest);
-        console.log('PowerShell deployment script copied (upload-env-secrets.ps1)');
       }
 
       const shScriptSrc = path.join(templatePath, 'upload-env-secrets.sh');
       const shScriptDest = path.join(projectPath, 'upload-env-secrets.sh');
       if (fs.existsSync(shScriptSrc)) {
         copyFileSync(shScriptSrc, shScriptDest);
-        // Make shell script executable
         try {
           fs.chmodSync(shScriptDest, 0o755);
         } catch (e) {
           // Ignore chmod errors on Windows
         }
-        console.log('Bash deployment script copied (upload-env-secrets.sh)');
       }
     } catch (e) {
-      console.warn('Could not copy deployment scripts:', e && e.message ? e.message : e);
+      // silent
     }
-
-    console.log('Copying templates...');
 
     // copy remaining templates
     copyTemplates(templatePath, projectPath);
-  console.log('Templates copied.');
+    success('Template files copied');
 
     // package.json anpassen
     const packageJsonPath = path.join(projectPath, 'package.json');
@@ -252,7 +282,7 @@ async function main() {
       writeJsonFile(packageJsonPath, packageJson);
     }
 
-  console.log('Installing dependencies...');
+    status('Configuring project...');
 
     process.chdir(projectPath);
 
@@ -262,30 +292,33 @@ async function main() {
       const readline = require('readline');
       const rlDb = readline.createInterface({ input: process.stdin, output: process.stdout });
       const askDb = (q) => new Promise((resolve) => rlDb.question(q, resolve));
-      const hasDbAns = (await askDb('Hast du bereits eine MongoDB? (j/N): ')).trim().toLowerCase();
+      console.log('');
+      const hasDbAns = (await askDb(`${colors.bright}MongoDB Setup${colors.reset}\nHast du bereits eine MongoDB? (j/N): `)).trim().toLowerCase();
       if (hasDbAns === 'j' || hasDbAns === 'y' || hasDbAns === 'yes') {
         const provided = (await askDb('DATABASE_URL (z.B. mongodb://user:pass@host:27017/db): ')).trim();
         if (provided) dbUrl = provided;
         rlDb.close();
+        success('MongoDB URL configured');
       } else {
         rlDb.close();
         // Start mongodb via docker-compose if available
         try {
-          console.log('Starting mongodb via docker compose...');
-          let res = spawnSync('docker', ['compose', '-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'inherit' });
+          status('Starting MongoDB via Docker Compose...');
+          let res = spawnSync('docker', ['compose', '-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'ignore' });
           if (res.status !== 0) {
             // fallback to docker-compose
-            res = spawnSync('docker-compose', ['-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'inherit' });
+            res = spawnSync('docker-compose', ['-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'ignore' });
           }
           if (res.status === 0) {
             // give container time to initialize
             await new Promise((r) => setTimeout(r, 3000));
             dbUrl = 'mongodb://admin:admin123@localhost:27017/vorlage?replicaSet=rs0&authSource=admin';
+            success('MongoDB started locally');
           } else {
-            console.warn('Could not start mongodb via docker-compose. You can provide a DATABASE_URL manually later.');
+            warn('Could not start MongoDB via Docker. You can provide DATABASE_URL manually later.');
           }
         } catch (e) {
-          console.warn('Docker compose start failed:', e && e.message ? e.message : e);
+          warn('Docker Compose startup failed');
         }
       }
     } catch (err) {
@@ -350,9 +383,7 @@ async function main() {
 
         if (changed) {
           fs.writeFileSync(envPath, updated, 'utf8');
-          console.log('.env updated');
-        } else {
-          console.log('.env already complete');
+          success('.env configured');
         }
       } else {
         // Create new .env using .env.example as base and add BETTER_AUTH_SECRET
@@ -383,16 +414,16 @@ async function main() {
         }
 
         fs.writeFileSync(envPath, contents, 'utf8');
-        console.log('.env created');
+        success('.env created');
       }
     } catch (err) {
-      console.warn('Could not create/update .env:', err && err.message ? err.message : err);
+      warn('Could not create/update .env');
     }
 
     // Try to run Prisma generate/db push first. If Prisma CLI (npx) isn't available
     // because dependencies haven't been installed, run `npm install` and retry.
     try {
-  console.log('Running Prisma generate & db push...');
+      status('Setting up database...');
 
       const schemaPath = path.join('src', 'prisma', 'schema.prisma');
 
@@ -400,26 +431,28 @@ async function main() {
         // Always run prisma generate and prisma db push without passing a
         // specific schema path. Rely on Prisma's default discovery of
         // schema.prisma in the project (or the CLI's defaults).
-        execSync('npx prisma generate', { stdio: 'inherit' });
-        execSync('npx prisma db push', { stdio: 'inherit' });
+        execSync('npx prisma generate', { stdio: 'ignore' });
+        execSync('npx prisma db push', { stdio: 'ignore' });
       }
 
       try {
         runPrismaCommands();
+        success('Database setup complete');
       } catch (prismaErr) {
-  console.log('Prisma failed; running npm install and retrying...');
-        execSync('npm install', { stdio: 'inherit' });
+        status('Running npm install...');
+        execSync('npm install', { stdio: 'ignore' });
         // retry
         try {
           runPrismaCommands();
+          success('Database setup complete');
         } catch (prismaErr2) {
-          console.warn('Prisma commands failed after retry.');
+          warn('Database setup encountered issues');
         }
       }
 
       // Start dev server in background (detached) so we can continue and run the admin script.
       try {
-        console.log('Starting dev server (background)...');
+        status('Starting dev server...');
         let dev;
         if (process.platform === 'win32') {
           // On Windows use `start` to spawn an independent window/process that won't die with this script
@@ -432,8 +465,9 @@ async function main() {
         if (dev && typeof dev.unref === 'function') dev.unref();
         // give the server a moment to boot so HTTP endpoints may be reachable
         await new Promise((resolve) => setTimeout(resolve, 2500));
+        success('Dev server started (http://localhost:3000)');
       } catch (devErr) {
-        console.warn('Failed to start dev server:', devErr && devErr.message ? devErr.message : devErr);
+        warn('Could not start dev server');
       }
 
       // Prompt for admin credentials and run create-admin-via-api.js in the newly created project
@@ -442,14 +476,14 @@ async function main() {
 
       const ask = (q) => new Promise((resolve) => rl.question(q, resolve));
 
-  console.log('Optional: create admin user (via scripts/create-admin-via-api.js)');
-      const email = (await ask('Admin E-Mail (leer = überspringen): ')).trim();
+      console.log('');
+      const email = (await ask(`${colors.bright}Admin Setup${colors.reset}\nAdmin E-Mail (leer = überspringen): `)).trim();
       if (!email) {
         rl.close();
       } else {
         const password = (await ask('Admin Passwort: ')).trim();
         const name = (await ask('Admin Name (optional): ')).trim();
-        const baseUrlInput = (await ask('Base URL of running app (optional, default http://localhost:3000): ')).trim();
+        const baseUrlInput = (await ask('Base URL (optional, default http://localhost:3000): ')).trim();
         const baseUrl = baseUrlInput || 'http://localhost:3000';
         rl.close();
 
@@ -461,46 +495,43 @@ async function main() {
           // Use spawnSync to avoid shell quoting issues and inherit stdio
           const args = [scriptPath, email, password, name || '', baseUrl];
           const node = process.execPath; // path to node binary
-          const res = spawnSync(node, args, { stdio: 'inherit' });
+          const res = spawnSync(node, args, { stdio: 'ignore' });
           if (res.error) {
-            console.error('Error running admin script:', res.error.message || res.error);
+            warn('Error running admin script');
           } else if (res.status !== 0) {
-            console.warn('Admin script exited with code', res.status);
+            warn('Admin script encountered an issue');
           } else {
-            console.log('Admin script finished.');
+            success('Admin user created');
           }
         }
       }
     } catch (err) {
-      console.warn('Prisma/admin steps failed:', err && err.message ? err.message : err);
+      warn('Setup encountered issues');
     }
 
-    console.log('Project created.');
-    console.log(`Next: cd ${projectName} && npm run dev`);
+    section('✅ Project Setup Complete!');
+    console.log(`\n${colors.bright}Next steps:${colors.reset}`);
+    console.log(`  cd ${projectName}`);
+    console.log('  npm run dev\n');
+    console.log(`${colors.dim}Dev server: http://localhost:3000${colors.reset}`);
     console.log('');
-    console.log('===============================================');
-    console.log('🚀 DEPLOYMENT SETUP');
-    console.log('===============================================');
-    console.log('');
-    console.log('📝 To deploy to Ubuntu server:');
+    section('🚀 Deployment Setup');
+    console.log(`${colors.dim}`);
+    console.log('To deploy to Ubuntu server:');
     console.log('');
     console.log('1. Install GitHub CLI: https://cli.github.com/');
-    console.log('2. Authenticate: gh auth login');
+    console.log('2. Run: gh auth login');
     console.log('3. Upload secrets:');
     if (process.platform === 'win32') {
-      console.log('   .\\upload-env-secrets.ps1');
+      console.log('     .\\upload-env-secrets.ps1');
     } else {
-      console.log('   ./upload-env-secrets.sh');
+      console.log('     ./upload-env-secrets.sh');
     }
-    console.log('4. Set SERVER_IP and SSH_PRIVATE_KEY:');
-    console.log('   gh secret set SERVER_IP');
-    console.log('   gh secret set SSH_PRIVATE_KEY < ~/.ssh/id_ed25519');
-    console.log('');
-    console.log('5. Push to main branch to trigger deployment');
-    console.log('   git push origin main');
-    console.log('===============================================');
+    console.log('4. Set secrets (gh secret set SERVER_IP, SSH_PRIVATE_KEY)');
+    console.log('5. Push to main: git push origin main');
+    console.log(`${colors.reset}\n`);
   } catch (error) {
-    console.error('Error:', error && error.message ? error.message : error);
+    console.error(`${colors.red}✗ Error: ${error && error.message ? error.message : error}${colors.reset}`);
     process.exit(1);
   }
 }
