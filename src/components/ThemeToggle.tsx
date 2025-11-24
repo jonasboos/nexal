@@ -14,7 +14,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+      <button className="p-2 rounded-md hover:bg-glass glass transition-colors text-foreground">
         <span className="sr-only">Toggle theme</span>
         <div className="w-5 h-5" />
       </button>
@@ -24,7 +24,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-700 dark:text-gray-200"
+      className="p-2 rounded-md hover:bg-glass glass transition-colors text-foreground"
       aria-label="Toggle theme"
     >
       {theme === "dark" ? (

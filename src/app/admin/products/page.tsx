@@ -145,7 +145,7 @@ export default function ProductsAdminPage() {
         <h1 className="text-3xl font-bold text-white">Product Management</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
         >
           {showForm ? 'Cancel' : 'Add Product'}
         </button>
@@ -336,7 +336,7 @@ export default function ProductsAdminPage() {
                   <td className="px-4 py-2 text-center">
                     <button
                       onClick={() => handleEdit(product)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mr-2"
+                      className="px-3 py-1 bg-primary text-primary-foreground rounded hover:bg-primary/90 mr-2"
                     >
                       Edit
                     </button>

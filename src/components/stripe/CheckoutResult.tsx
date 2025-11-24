@@ -17,8 +17,8 @@ export default function CheckoutResult({
 }: CheckoutResultProps) {
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors">
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors">
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors">
+        <div className="bg-card p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors border border-card">
           <div className="mb-6">
             <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
@@ -35,18 +35,18 @@ export default function CheckoutResult({
                 />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
               Payment Successful!
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-muted">
               Your purchase has been completed successfully.
             </p>
           </div>
 
           {sessionId && (
-            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded mb-6 transition-colors">
-              <p className="text-sm text-gray-600 dark:text-gray-300">Session ID:</p>
-              <p className="text-xs font-mono text-gray-800 dark:text-gray-200 break-all">
+            <div className="bg-card p-4 rounded mb-6 transition-colors border border-card">
+              <p className="text-sm text-muted">Session ID:</p>
+              <p className="text-xs font-mono text-foreground break-all">
                 {sessionId}
               </p>
             </div>
@@ -55,7 +55,7 @@ export default function CheckoutResult({
           <div className="space-y-3">
             <Link
               href={returnUrl}
-              className="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
             >
               {returnLabel}
             </Link>
@@ -66,8 +66,8 @@ export default function CheckoutResult({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors">
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors">
+    <div className="bg-card p-8 rounded-lg shadow-md max-w-md w-full text-center transition-colors border border-card">
         <div className="mb-6">
           <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
@@ -84,10 +84,10 @@ export default function CheckoutResult({
               />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Payment Cancelled
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted">
             Your payment was cancelled. No charges were made.
           </p>
         </div>
@@ -95,7 +95,7 @@ export default function CheckoutResult({
         <div className="space-y-3">
           <Link
             href={returnUrl}
-            className="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
           >
             {returnLabel}
           </Link>

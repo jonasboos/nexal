@@ -16,11 +16,11 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
-      <nav className="w-full max-w-5xl rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg transition-all">
+      <nav className="w-full max-w-5xl rounded-2xl bg-card/80 backdrop-blur-md shadow-lg transition-all">
         <div className="px-4 sm:px-6">
           <div className="flex justify-between h-14 items-center">
             {/* Logo */}
-            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
               Nexal
             </Link>
 
@@ -37,7 +37,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-3">
                     {/* User Avatar */}
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
                       {session.user.name?.charAt(0).toUpperCase() || session.user.email.charAt(0).toUpperCase()}
                     </div>
                     {/* User Info */}
@@ -61,7 +61,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
+                  className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-colors shadow-sm"
                 >
                   Sign In
                 </Link>

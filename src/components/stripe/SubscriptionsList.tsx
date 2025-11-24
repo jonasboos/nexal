@@ -78,7 +78,7 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">Loading subscriptions...</p>
+        <p className="text-muted">Loading subscriptions...</p>
       </div>
     );
   }
@@ -90,16 +90,16 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
   if (!hasActiveSubscription && subscriptions.length > 0) {
     return (
       <>
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-6 mb-8 transition-colors">
+        <div className="bg-card rounded-lg p-6 mb-8 transition-colors border border-yellow-200 dark:border-yellow-700">
           <h2 className="text-xl font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
             No Active Subscription
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">
+          <p className="text-muted mb-4">
             You don't have an active subscription. Subscribe to access premium content!
           </p>
           <Link
             href="/subscribe"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             View Subscription Plans
           </Link>
@@ -111,11 +111,11 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
 
   if (subscriptions.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
-        <p className="text-gray-500 dark:text-gray-400 mb-4">You have no subscriptions yet.</p>
+      <div className="bg-card rounded-lg p-8 text-center shadow-sm border border-card transition-colors">
+        <p className="text-muted mb-4">You have no subscriptions yet.</p>
         <Link
           href="/subscribe"
-          className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           Browse Plans
         </Link>
@@ -129,15 +129,15 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
         {subscriptions.map((subscription) => (
           <div
             key={subscription.id}
-            className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm transition-colors"
+            className="bg-card rounded-lg p-6 border border-card shadow-sm transition-colors"
           >
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-semibold text-foreground mb-2">
                   {subscription.product.name}
                 </h3>
                 {subscription.product.description && (
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className="text-muted">
                     {subscription.product.description}
                   </p>
                 )}
@@ -147,7 +147,7 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
                   subscription.status === 'active'
                     ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     : subscription.status === 'trialing'
-                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                    ? 'bg-primary/10 text-primary'
                     : subscription.status === 'canceled'
                     ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                     : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
@@ -159,19 +159,19 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
             </div>
 
             <div className="mb-4">
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-muted">
                 <span className="font-semibold">Price:</span>{' '}
                 {subscription.product.price.toFixed(2)}{' '}
                 {subscription.product.currency.toUpperCase()} / month
               </p>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-muted">
                 <span className="font-semibold">Renews on:</span>{' '}
                 {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
               </p>
             </div>
 
             {subscription.cancelAtPeriodEnd && (
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded p-3 mb-4 transition-colors">
+              <div className="bg-card border border-yellow-200 dark:border-yellow-700 rounded p-3 mb-4 transition-colors">
                 <p className="text-yellow-800 dark:text-yellow-400 text-sm">
                   This subscription will be canceled on{' '}
                   {new Date(subscription.currentPeriodEnd).toLocaleDateString()}

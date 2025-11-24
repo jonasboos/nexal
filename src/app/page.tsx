@@ -34,13 +34,13 @@ export default async function Home() {
         {/* Quick Links Section */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Subscription Links */}
-          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
+          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
             <div className="text-3xl mb-3 text-center">🛍️</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Abonnements</h3>
             <div className="space-y-2">
               <Link
                 href="/subscribe"
-                className="block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center transition-colors"
+                className="block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 text-center transition-colors"
               >
                 Abonnement-Pläne
               </Link>
@@ -54,7 +54,7 @@ export default async function Home() {
           </div>
 
           {/* Premium Content */}
-          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
+          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
             <div className="text-3xl mb-3 text-center">👑</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Premium</h3>
             <Link
@@ -69,7 +69,7 @@ export default async function Home() {
           </div>
 
           {/* Admin Panel */}
-          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
+          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
             <div className="text-3xl mb-3 text-center">⚙️</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Admin</h3>
             <div className="space-y-2">
@@ -90,7 +90,7 @@ export default async function Home() {
         </div>
 
         {/* Database Status */}
-        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 mb-8 transition-colors">
+        <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent mb-8 transition-colors">
           <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-2">
             <span>🗄️</span> Database Status
           </h2>
@@ -125,13 +125,13 @@ export default async function Home() {
           <div className="flex gap-4 justify-center flex-wrap">
             <a
               href="/STRIPE_SETUP.md"
-              className="px-4 py-2 bg-gray-200 dark:bg-zinc-800 rounded hover:bg-gray-300 dark:hover:bg-zinc-700"
+              className="px-4 py-2 bg-gray-200 dark:bg-secondary rounded hover:bg-gray-300 dark:hover:bg-secondary/80"
             >
               Stripe Setup
             </a>
             <a
               href="/SUBSCRIPTION_GUIDE.md"
-              className="px-4 py-2 bg-gray-200 dark:bg-zinc-800 rounded hover:bg-gray-300 dark:hover:bg-zinc-700"
+              className="px-4 py-2 bg-gray-200 dark:bg-secondary rounded hover:bg-gray-300 dark:hover:bg-secondary/80"
             >
               Subscription Guide
             </a>

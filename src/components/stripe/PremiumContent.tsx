@@ -59,11 +59,11 @@ export default function PremiumContent({
     if (loadingContent) {
       return <>{loadingContent}</>;
     }
-    return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex items-center justify-center transition-colors">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
-    );
+      return (
+        <div className="min-h-screen bg-background text-foreground flex items-center justify-center transition-colors">
+          <p className="text-muted">Loading...</p>
+        </div>
+      );
   }
 
   if (!hasAccess) {
@@ -72,27 +72,22 @@ export default function PremiumContent({
     }
 
     return (
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 flex items-center justify-center px-4 transition-colors">
-        <div className="max-w-md text-center">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-8 border border-gray-200 dark:border-gray-700 shadow-md dark:shadow-none transition-colors">
+        <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 transition-colors">
+          <div className="max-w-md text-center">
+            <div className="bg-card rounded-lg p-8 border border-card shadow-md dark:shadow-none transition-colors">
             <div className="text-6xl mb-4">🔒</div>
             <h1 className="text-3xl font-bold mb-4">Premium Content</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-muted mb-6">
               This content is only available to subscribers. Subscribe now to unlock exclusive features!
             </p>
             <div className="space-y-3">
               <Link
                 href="/subscribe"
-                className="block w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors"
+                className="block w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 font-semibold transition-colors"
               >
                 View Subscription Plans
               </Link>
-              <Link
-                href="/"
-                className="block w-full px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-              >
-                Back to Home
-              </Link>
+              <Link href="/" className="block w-full px-6 py-3 bg-card text-muted rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border border-card">Back to Home</Link>
             </div>
           </div>
         </div>

@@ -102,7 +102,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-8">
+    <div className="min-h-screen bg-background p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-2 text-gray-800">Admin Dashboard</h1>
         <p className="text-gray-600 mb-8">Manage all users in the system</p>

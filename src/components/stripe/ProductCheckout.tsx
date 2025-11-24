@@ -87,7 +87,7 @@ export default function ProductCheckout({ userId, onCheckoutStart, onCheckoutErr
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-lg text-gray-600 dark:text-gray-400">Loading products...</p>
+        <p className="text-lg text-muted">Loading products...</p>
       </div>
     );
   }
@@ -95,7 +95,7 @@ export default function ProductCheckout({ userId, onCheckoutStart, onCheckoutErr
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 dark:text-gray-400 mb-4">No products available</p>
+        <p className="text-muted mb-4">No products available</p>
       </div>
     );
   }
@@ -105,26 +105,26 @@ export default function ProductCheckout({ userId, onCheckoutStart, onCheckoutErr
       {products.map((product) => (
         <div
           key={product.id}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-none dark:border dark:border-gray-700 p-6 flex flex-col transition-colors"
+          className="bg-card rounded-lg shadow-md border border-card p-6 flex flex-col transition-colors"
         >
-          <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{product.name}</h2>
+          <h2 className="text-2xl font-bold mb-2 text-foreground">{product.name}</h2>
           {product.description && (
-            <p className="text-gray-600 dark:text-gray-400 mb-4 grow">
+            <p className="text-muted mb-4 grow">
               {product.description}
             </p>
           )}
 
           <div className="mt-auto">
-            <div className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+            <div className="text-3xl font-bold mb-4 text-foreground">
               {product.price.toFixed(2)}{' '}
-              <span className="text-lg text-gray-600 dark:text-gray-400">
+              <span className="text-lg text-muted">
                 {product.currency.toUpperCase()}
               </span>
             </div>
             <button
               onClick={() => handleBuy(product.id)}
               disabled={processingProductId === product.id}
-              className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+              className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
             >
               {processingProductId === product.id
                 ? 'Processing...'

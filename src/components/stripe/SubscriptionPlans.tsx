@@ -96,15 +96,15 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">Loading subscription plans...</p>
+        <p className="text-muted">Loading subscription plans...</p>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-gray-700">
-        <p className="text-gray-500 dark:text-gray-400">No subscription plans available at the moment.</p>
+      <div className="bg-card rounded-lg p-8 text-center shadow-sm border border-card">
+        <p className="text-muted">No subscription plans available at the moment.</p>
       </div>
     );
   }
@@ -114,7 +114,7 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
       {products.map((product) => (
         <div
           key={product.id}
-          className="bg-white dark:bg-gray-800 rounded-lg p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-600 transition-colors shadow-sm"
+          className="bg-card rounded-lg p-8 border-2 border-card hover:border-primary transition-colors shadow-sm"
         >
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h2>
           
@@ -124,22 +124,22 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
             </div>
           )}
           
-          <div className="mb-6">
-            <span className="text-4xl font-bold text-gray-900 dark:text-white">
+            <div className="mb-6">
+            <span className="text-4xl font-bold text-foreground">
               {product.price.toFixed(2)}
             </span>
-            <span className="text-gray-500 dark:text-gray-400 ml-2">
+            <span className="text-muted ml-2">
               {product.currency.toUpperCase()} / {product.billingInterval === 'year' ? 'year' : 'month'}
             </span>
           </div>
 
           {product.description && (
-            <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
+            <p className="text-muted mb-6">{product.description}</p>
           )}
 
           {selectedProduct === product.id ? (
             <div className="mb-4">
-              <label className="block text-sm text-gray-500 dark:text-gray-400 mb-2">
+                <label className="block text-sm text-muted mb-2">
                 Have a coupon code?
               </label>
               <div className="flex gap-2">
@@ -148,14 +148,14 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                   placeholder="COUPON CODE"
-                  className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 uppercase"
+                  className="flex-1 px-3 py-2 bg-transparent border border-card rounded text-foreground placeholder:text-gray-400 dark:placeholder:text-gray-500 uppercase"
                 />
                 <button
                   onClick={() => {
                     setSelectedProduct(null);
                     setCouponCode('');
                   }}
-                  className="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
+                  className="px-3 py-2 bg-transparent text-muted rounded hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   ✕
                 </button>
@@ -164,7 +164,7 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
           ) : (
             <button
               onClick={() => setSelectedProduct(product.id)}
-              className="w-full mb-3 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+              className="w-full mb-3 text-sm text-primary hover:text-primary/80"
             >
               + Add coupon code
             </button>
@@ -172,7 +172,7 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
 
           <button
             onClick={() => handleSubscribe(product.id, selectedProduct === product.id ? couponCode : undefined)}
-            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition-colors"
+            className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 font-semibold transition-colors"
           >
             Subscribe Now
           </button>
