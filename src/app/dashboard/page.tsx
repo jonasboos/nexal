@@ -12,7 +12,8 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.push('/login');
+      // include redirect so after login the user returns to /dashboard
+      router.push('/login?redirect=/dashboard');
     }
   }, [session, isPending, router]);
 

@@ -22,7 +22,10 @@ export async function proxy(request: NextRequest) {
     const sessionCookie = request.cookies.get('better-auth.session_token');
 
     if (!sessionCookie) {
-      const url = new URL('/', request.url);
+      // Redirect unauthenticated users to the login page and include
+      // the originally requested path as `redirect` so we can send
+      // them back after login.
+      const url = new URL('/login', request.url);
       url.searchParams.set('redirect', pathname);
       return NextResponse.redirect(url);
     }

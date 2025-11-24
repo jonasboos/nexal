@@ -20,9 +20,14 @@ export default function Navbar() {
         <div className="px-4 sm:px-6">
           <div className="flex justify-between h-14 items-center">
             {/* Logo */}
-            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
-              Nexal
-            </Link>
+            <div className="flex items-center gap-8">
+              <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
+                Nexal
+              </Link>
+              <Link href="/subscribe" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
+                Pricing
+              </Link>
+            </div>
 
             {/* User Section */}
             <div className="flex items-center gap-4">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 import { ThemeProvider } from "@/src/components/ThemeProvider";
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+      <body className="antialiased flex flex-col min-h-screen">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -23,9 +24,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="pt-24 min-h-screen">
+          <main className="pt-24 grow">
             {children}
           </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

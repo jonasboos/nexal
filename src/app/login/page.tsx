@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { signIn, signUp } from "@/src/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginInner() {
   const [activeTab, setActiveTab] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +12,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams?.get('redirect') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ export default function LoginPage() {
           return;
         }
 
-        router.push("/");
+        router.push(redirectTo);
       } else {
         const res: any = await signIn.email({
           email,
@@ -48,7 +50,7 @@ export default function LoginPage() {
           return;
         }
 
-        router.push("/");
+        router.push(redirectTo);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
@@ -63,7 +65,7 @@ export default function LoginPage() {
     try {
       await signIn.social({
         provider,
-        callbackURL: "/",
+        callbackURL: redirectTo,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Social sign-in failed");
@@ -270,4 +272,18 @@ export default function LoginPage() {
     </div>
   );
 
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
+        </div>
+      }
+    >
+      <LoginInner />
+    </Suspense>
+  );
 }
