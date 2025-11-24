@@ -3,6 +3,7 @@
 import { useSession, signOut } from "@/src/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
   const { data: session, isPending } = useSession();
@@ -14,53 +15,62 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <Link href="/" className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors">
-            Nexal
-          </Link>
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
+      <nav className="w-full max-w-5xl rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg transition-all">
+        <div className="px-4 sm:px-6">
+          <div className="flex justify-between h-14 items-center">
+            {/* Logo */}
+            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              Nexal
+            </Link>
 
-          {/* User Section */}
-          <div className="flex items-center gap-4">
-            {isPending ? (
-              <div className="animate-pulse flex items-center gap-2">
-                <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-                <div className="w-20 h-4 bg-gray-200 rounded"></div>
-              </div>
-            ) : session ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3">
-                  {/* User Avatar */}
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    {session.user.name?.charAt(0).toUpperCase() || session.user.email.charAt(0).toUpperCase()}
-                  </div>
-                  {/* User Info */}
-                  <div className="hidden sm:block">
-                    <p className="text-sm font-medium text-gray-900">{session.user.name || "User"}</p>
-                    <p className="text-xs text-gray-500">{session.user.email}</p>
-                  </div>
+            {/* User Section */}
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              
+              {isPending ? (
+                <div className="animate-pulse flex items-center gap-2">
+                  <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                  <div className="w-20 h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
                 </div>
-                {/* Sign Out Button */}
-                <button
-                  onClick={handleSignOut}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+              ) : session ? (
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
+                    {/* User Avatar */}
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      {session.user.name?.charAt(0).toUpperCase() || session.user.email.charAt(0).toUpperCase()}
+                    </div>
+                    {/* User Info */}
+                    <div className="hidden sm:block">
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{session.user.name || "User"}</p>
+                    </div>
+                  </div>
+                  {/* Sign Out Button */}
+                  <button
+                    onClick={handleSignOut}
+                    className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                    title="Sign Out"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
                 >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
-              >
-                Sign In
-              </Link>
-            )}
+                  Sign In
+                </Link>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
+

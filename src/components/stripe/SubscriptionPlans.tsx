@@ -96,15 +96,15 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <p className="text-gray-400">Loading subscription plans...</p>
+        <p className="text-gray-500 dark:text-gray-400">Loading subscription plans...</p>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="bg-gray-800 rounded-lg p-8 text-center">
-        <p className="text-gray-400">No subscription plans available at the moment.</p>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-8 text-center shadow-sm border border-gray-200 dark:border-gray-700">
+        <p className="text-gray-500 dark:text-gray-400">No subscription plans available at the moment.</p>
       </div>
     );
   }
@@ -114,32 +114,32 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
       {products.map((product) => (
         <div
           key={product.id}
-          className="bg-gray-800 rounded-lg p-8 border-2 border-gray-700 hover:border-blue-600 transition-colors"
+          className="bg-white dark:bg-gray-800 rounded-lg p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-600 dark:hover:border-blue-600 transition-colors shadow-sm"
         >
-          <h2 className="text-2xl font-bold text-white mb-4">{product.name}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h2>
           
           {product.trialPeriodDays && product.trialPeriodDays > 0 && (
-            <div className="mb-4 px-3 py-1 bg-green-600/20 border border-green-600 rounded-full text-green-400 text-sm text-center">
+            <div className="mb-4 px-3 py-1 bg-green-100 dark:bg-green-600/20 border border-green-600 rounded-full text-green-700 dark:text-green-400 text-sm text-center">
               🎁 {product.trialPeriodDays} days free trial
             </div>
           )}
           
           <div className="mb-6">
-            <span className="text-4xl font-bold text-white">
+            <span className="text-4xl font-bold text-gray-900 dark:text-white">
               {product.price.toFixed(2)}
             </span>
-            <span className="text-gray-400 ml-2">
+            <span className="text-gray-500 dark:text-gray-400 ml-2">
               {product.currency.toUpperCase()} / {product.billingInterval === 'year' ? 'year' : 'month'}
             </span>
           </div>
 
           {product.description && (
-            <p className="text-gray-300 mb-6">{product.description}</p>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">{product.description}</p>
           )}
 
           {selectedProduct === product.id ? (
             <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">
+              <label className="block text-sm text-gray-500 dark:text-gray-400 mb-2">
                 Have a coupon code?
               </label>
               <div className="flex gap-2">
@@ -148,14 +148,14 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                   placeholder="COUPON CODE"
-                  className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-500 uppercase"
+                  className="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 uppercase"
                 />
                 <button
                   onClick={() => {
                     setSelectedProduct(null);
                     setCouponCode('');
                   }}
-                  className="px-3 py-2 bg-gray-700 text-gray-400 rounded hover:bg-gray-600"
+                  className="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
                 >
                   ✕
                 </button>
@@ -164,7 +164,7 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
           ) : (
             <button
               onClick={() => setSelectedProduct(product.id)}
-              className="w-full mb-3 text-sm text-blue-400 hover:text-blue-300"
+              className="w-full mb-3 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
             >
               + Add coupon code
             </button>
@@ -181,3 +181,4 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
     </div>
   );
 }
+

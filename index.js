@@ -75,13 +75,12 @@ function copyTemplates(templatePath, projectPath) {
     // Additional deployment helpers (not part of published package 'files')
     'upload-env-secrets.ps1',
     'upload-env-secrets.sh',
-    'deployment',
     '.github',
   ];
 
   // Dateien/Varianten, die wir beim Kopieren standardmäßig überspringen wollen
   // (keine generische `auth.ts` mehr - nur DB/provider-spezifische Varianten)
-  const skipNames = ['auth.postgresql.ts', 'auth.mongodb.ts', 'schema.postgresql.prisma', 'schema.mongodb.prisma'];
+  const skipNames = ['auth.postgresql.ts', 'auth.mongodb.ts', 'schema.postgresql.prisma', 'schema.mongodb.prisma', 'publish.yml'];
 
   for (const file of filesToCopy) {
     const srcPath = path.join(templatePath, file);

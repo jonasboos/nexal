@@ -17,7 +17,7 @@ export default async function Home() {
   const dbStatus = await getDbStatus();
 
   return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black">
+    <div className="min-h-screen bg-background font-sans text-foreground transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Next.js Template with Subscriptions</h1>
@@ -34,19 +34,19 @@ export default async function Home() {
         {/* Quick Links Section */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           {/* Subscription Links */}
-          <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-zinc-800">
+          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
             <div className="text-3xl mb-3 text-center">🛍️</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Abonnements</h3>
             <div className="space-y-2">
               <Link
                 href="/subscribe"
-                className="block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center"
+                className="block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center transition-colors"
               >
                 Abonnement-Pläne
               </Link>
               <Link
                 href="/subscriptions"
-                className="block px-4 py-2 bg-gray-700 dark:bg-zinc-700 text-white rounded hover:bg-gray-600 text-center"
+                className="block px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 text-center transition-colors"
               >
                 Meine Abonnements
               </Link>
@@ -54,12 +54,12 @@ export default async function Home() {
           </div>
 
           {/* Premium Content */}
-          <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-zinc-800">
+          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
             <div className="text-3xl mb-3 text-center">👑</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Premium</h3>
             <Link
               href="/premium"
-              className="block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center"
+              className="block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center transition-colors"
             >
               Premium Bereich
             </Link>
@@ -69,19 +69,19 @@ export default async function Home() {
           </div>
 
           {/* Admin Panel */}
-          <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-zinc-800">
+          <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 transition-colors">
             <div className="text-3xl mb-3 text-center">⚙️</div>
             <h3 className="text-xl font-semibold mb-3 text-center">Admin</h3>
             <div className="space-y-2">
               <Link
                 href="/admin"
-                className="block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-center"
+                className="block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-center transition-colors"
               >
                 Dashboard
               </Link>
               <Link
                 href="/admin/products"
-                className="block px-4 py-2 bg-gray-700 dark:bg-zinc-700 text-white rounded hover:bg-gray-600 text-center"
+                className="block px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 text-center transition-colors"
               >
                 Produkte
               </Link>
@@ -90,14 +90,15 @@ export default async function Home() {
         </div>
 
         {/* Database Status */}
-        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-zinc-800 mb-8">
+        <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800 mb-8 transition-colors">
           <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-2">
             <span>🗄️</span> Database Status
           </h2>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-gray-600 dark:text-gray-400">Connection:</span>
-              <span className={`font-semibold ${dbStatus.connected ? 'text-green-600' : 'text-red-600'}`}>
+              <span className={`font-semibold ${dbStatus.connected ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+
                 {dbStatus.connected ? '✅ Connected' : '❌ Disconnected'}
               </span>
             </div>
