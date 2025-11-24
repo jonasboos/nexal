@@ -23,11 +23,11 @@
     "typescript",
     "tailwind"
   ],
-  "author": "Jonasppxx",
+  "author": "jonasboos",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jonasppxx/nexal.git"
+    "url": "git+https://github.com/jonasboos/nexal.git"
   },
   "files": [
     "src",
