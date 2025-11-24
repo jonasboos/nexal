@@ -44,7 +44,8 @@
     ".env.example",
     "deployment",
     "upload-env-secrets.ps1",
-    "upload-env-secrets.sh"
+    "upload-env-secrets.sh",
+    "SAAS_PROMPT.md"
   ],
   "bin": {
     "nexal": "./index.js"

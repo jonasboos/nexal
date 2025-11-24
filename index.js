@@ -76,6 +76,8 @@ function copyTemplates(templatePath, projectPath) {
     'upload-env-secrets.ps1',
     'upload-env-secrets.sh',
     '.github',
+    "SAAS_PROMPT.md",
+    
   ];
 
   // Dateien/Varianten, die wir beim Kopieren standardmäßig überspringen wollen
@@ -129,6 +131,30 @@ function copyTemplates(templatePath, projectPath) {
     }
   } catch (e) {
     // keep quiet; copying will have been attempted above
+  }
+
+  // Some registries / npm packing flows may change or drop files that start
+  // with a dot (for example .gitignore). To be robust we look for a
+  // non-dotted 'gitignore' filename in the template and copy it to the
+  // destination as '.gitignore' if the dotted version was not copied.
+  try {
+    const altGitignoreSrc = path.join(templatePath, 'gitignore');
+    const destGitignore = path.join(projectPath, '.gitignore');
+
+    // If destination doesn't have a .gitignore, but template shipped a
+    // 'gitignore' file (without leading dot), copy/rename it.
+    if (!fs.existsSync(destGitignore) && fs.existsSync(altGitignoreSrc)) {
+      ensureDir(path.dirname(destGitignore));
+      try {
+        copyFileSync(altGitignoreSrc, destGitignore);
+        console.log("Copied gitignore -> .gitignore (template provided 'gitignore')");
+      } catch (e) {
+        // don't fail the whole copy process for this
+        console.warn('Could not copy gitignore to .gitignore:', e && e.message ? e.message : e);
+      }
+    }
+  } catch (e) {
+    // ignore any failure here
   }
 }
 
