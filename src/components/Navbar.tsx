@@ -42,12 +42,14 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-3">
                     {/* User Avatar */}
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                    <Link href="/profile" className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm hover:opacity-80 transition-opacity">
                       {session.user.name?.charAt(0).toUpperCase() || session.user.email.charAt(0).toUpperCase()}
-                    </div>
+                    </Link>
                     {/* User Info */}
                     <div className="hidden sm:block">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{session.user.name || "User"}</p>
+                      <Link href="/profile" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline">
+                        {session.user.name || "User"}
+                      </Link>
                     </div>
                   </div>
                   {/* Sign Out Button */}

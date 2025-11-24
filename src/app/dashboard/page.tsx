@@ -37,31 +37,7 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, {session.user.name || session.user.email}</p>
           </div>
-          <Link 
-            href="/subscribe" 
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
-          >
-            Upgrade Plan
-          </Link>
         </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* User Profile Card */}
-          <div className="bg-card text-card-foreground rounded-xl shadow-sm border border-border p-6">
-            <h2 className="text-xl font-semibold mb-4">Profile</h2>
-            <div className="space-y-2">
-              <p><span className="font-medium text-muted-foreground">Name:</span> {session.user.name}</p>
-              <p><span className="font-medium text-muted-foreground">Email:</span> {session.user.email}</p>
-              <p><span className="font-medium text-muted-foreground">ID:</span> <span className="text-xs font-mono bg-muted px-1 rounded">{session.user.id}</span></p>
-            </div>
-          </div>
-
-          {/* Subscription Status Card */}
-          <div className="bg-card text-card-foreground rounded-xl shadow-sm border border-border p-6 md:col-span-2">
-            <h2 className="text-xl font-semibold mb-4">Subscription</h2>
-            <SubscriptionsList />
-          </div>
-        </div>
 
         {/* Example Content Section */}
         <div className="mt-8">

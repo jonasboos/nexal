@@ -51,6 +51,7 @@
     "nexal": "./index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.936.0",
     "@prisma/client": "6.19.0",
     "@stripe/stripe-js": "^7.3.0",
     "bcryptjs": "^2.4.3",

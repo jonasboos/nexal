@@ -3,6 +3,7 @@
 import React, { Suspense, useState } from "react";
 import { signIn, signUp } from "@/src/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 function LoginInner() {
   const [activeTab, setActiveTab] = useState<"signin" | "signup">("signin");
@@ -146,7 +147,14 @@ function LoginInner() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
+                {activeTab === "signin" && (
+                  <Link href="/forgot-password" className="text-xs font-medium text-primary hover:text-primary/80">
+                    Forgot password?
+                  </Link>
+                )}
+              </div>
               <input
                 type="password"
                 value={password}

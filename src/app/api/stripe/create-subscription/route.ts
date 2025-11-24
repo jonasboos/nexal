@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe } from '@/src/lib/stripe';
 import { prisma } from '@/src/lib/prisma/prisma';
+import { getPlanById, Plan } from '@/src/lib/plans';
 import Stripe from 'stripe';
 
 export async function POST(req: NextRequest) {
@@ -15,9 +16,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Get product
-    const product = await prisma.product.findUnique({
-      where: { id: productId },
-    });
+    let product: Plan | Awaited<ReturnType<typeof prisma.product.findUnique>> | undefined = getPlanById(productId);
+    
+    if (!product) {
+      product = await prisma.product.findUnique({
+        where: { id: productId },
+      });
+    }
 
     if (!product || !product.active) {
       return NextResponse.json(

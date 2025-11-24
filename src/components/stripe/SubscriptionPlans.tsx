@@ -1,21 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSession } from '@/src/lib/auth-client';
 import { loadStripe } from '@stripe/stripe-js';
+import { PLANS } from '@/src/lib/plans';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-
-interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  price: number;
-  currency: string;
-  billingInterval: string;
-  trialPeriodDays: number | null;
-  active: boolean;
-}
 
 interface SubscriptionPlansProps {
   onSubscribeStart?: () => void;
@@ -24,29 +14,8 @@ interface SubscriptionPlansProps {
 
 export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }: SubscriptionPlansProps) {
   const { data: session } = useSession();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [couponCode, setCouponCode] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      const activeProducts = (data.products || []).filter(
-        (p: Product) => p.active
-      );
-      setProducts(activeProducts);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubscribe = async (productId: string, appliedCoupon?: string) => {
     if (!session?.user?.id) {
@@ -93,15 +62,7 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <p className="text-muted">Loading subscription plans...</p>
-      </div>
-    );
-  }
-
-  if (products.length === 0) {
+  if (PLANS.length === 0) {
     return (
       <div className="bg-card rounded-lg p-8 text-center shadow-sm border border-card">
         <p className="text-muted">No subscription plans available at the moment.</p>
@@ -111,18 +72,14 @@ export default function SubscriptionPlans({ onSubscribeStart, onSubscribeError }
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {products.map((product) => (
+      {PLANS.map((product) => (
         <div
           key={product.id}
           className="bg-card rounded-lg p-8 border-2 border-card hover:border-primary transition-colors shadow-sm"
         >
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{product.name}</h2>
           
-          {product.trialPeriodDays && product.trialPeriodDays > 0 && (
-            <div className="mb-4 px-3 py-1 bg-green-100 dark:bg-green-600/20 border border-green-600 rounded-full text-green-700 dark:text-green-400 text-sm text-center">
-              🎁 {product.trialPeriodDays} days free trial
-            </div>
-          )}
+          {/* Trial period logic removed as it's not in the hardcoded plan type yet, or can be added if needed */}
           
             <div className="mb-6">
             <span className="text-4xl font-bold text-foreground">
