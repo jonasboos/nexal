@@ -33,6 +33,20 @@ export default async function Home() {
 
         {/* Quick Links Section */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {/* Dashboard Link */}
+          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
+            <div className="text-3xl mb-3 text-center">📊</div>
+            <h3 className="text-xl font-semibold mb-3 text-center">Dashboard</h3>
+            <div className="space-y-2">
+              <Link
+                href="/dashboard"
+                className="block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 text-center transition-colors"
+              >
+                Go to Dashboard
+              </Link>
+            </div>
+          </div>
+
           {/* Subscription Links */}
           <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
             <div className="text-3xl mb-3 text-center">🛍️</div>
@@ -45,7 +59,7 @@ export default async function Home() {
                 Abonnement-Pläne
               </Link>
               <Link
-                href="/subscriptions"
+                href="/dashboard"
                 className="block px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 text-center transition-colors"
               >
                 Meine Abonnements
