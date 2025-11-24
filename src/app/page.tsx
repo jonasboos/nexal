@@ -1,155 +1,46 @@
-import { prisma } from '@/src/lib/prisma/prisma';
-import UserSession from '@/src/components/auth/UserSession';
+'use client';
+
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-async function getDbStatus() {
-  try {
-    await prisma.$connect();
-    const userCount = await prisma.user.count();
-    const postCount = await prisma.post.count();
-    return { connected: true, userCount, postCount };
-  } catch (error) {
-    return { connected: false, userCount: 0, postCount: 0 };
-  }
-}
-
-export default async function Home() {
-  const dbStatus = await getDbStatus();
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground transition-colors duration-300">
-      <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-background font-sans text-foreground transition-colors duration-300 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-primary/5 blur-[100px]" />
+        <div className="absolute top-[40%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-blue-500/5 blur-[100px]" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-24 relative z-10">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Next.js Template with Subscriptions</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-            MongoDB Replica Set + Better-Auth + Stripe Subscriptions
-          </p>
-        </div>
-
-        {/* User Session Card */}
-        <div className="mb-8">
-          <UserSession />
-        </div>
-
-        {/* Quick Links Section */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {/* Dashboard Link */}
-          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
-            <div className="text-3xl mb-3 text-center">📊</div>
-            <h3 className="text-xl font-semibold mb-3 text-center">Dashboard</h3>
-            <div className="space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
+              Next.js Template
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              A complete starter template with Authentication, Stripe Subscriptions, and MongoDB.
+            </p>
+            
+            <div className="flex gap-4 justify-center">
               <Link
                 href="/dashboard"
-                className="block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 text-center transition-colors"
+                className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25"
               >
-                Go to Dashboard
+                Get Started
               </Link>
-            </div>
-          </div>
-
-          {/* Subscription Links */}
-          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
-            <div className="text-3xl mb-3 text-center">🛍️</div>
-            <h3 className="text-xl font-semibold mb-3 text-center">Abonnements</h3>
-            <div className="space-y-2">
               <Link
                 href="/subscribe"
-                className="block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 text-center transition-colors"
+                className="px-8 py-3 bg-card border border-border text-foreground rounded-xl font-medium hover:bg-accent transition-all"
               >
-                Abonnement-Pläne
-              </Link>
-              <Link
-                href="/dashboard"
-                className="block px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 text-center transition-colors"
-              >
-                Meine Abonnements
+                View Pricing
               </Link>
             </div>
-          </div>
-
-          {/* Premium Content */}
-          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
-            <div className="text-3xl mb-3 text-center">👑</div>
-            <h3 className="text-xl font-semibold mb-3 text-center">Premium</h3>
-            <Link
-              href="/premium"
-              className="block px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-center transition-colors"
-            >
-              Premium Bereich
-            </Link>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
-              Nur für Abonnenten
-            </p>
-          </div>
-
-          {/* Admin Panel */}
-          <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent transition-colors">
-            <div className="text-3xl mb-3 text-center">⚙️</div>
-            <h3 className="text-xl font-semibold mb-3 text-center">Admin</h3>
-            <div className="space-y-2">
-              <Link
-                href="/admin"
-                className="block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-center transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/admin/products"
-                className="block px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 text-center transition-colors"
-              >
-                Produkte
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Database Status */}
-        <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 border border-gray-200 dark:border-transparent mb-8 transition-colors">
-          <h2 className="text-xl font-semibold mb-4 flex items-center justify-center gap-2">
-            <span>🗄️</span> Database Status
-          </h2>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600 dark:text-gray-400">Connection:</span>
-              <span className={`font-semibold ${dbStatus.connected ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-
-                {dbStatus.connected ? '✅ Connected' : '❌ Disconnected'}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600 dark:text-gray-400">Users:</span>
-              <span className="font-semibold">{dbStatus.userCount}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600 dark:text-gray-400">Posts:</span>
-              <span className="font-semibold">{dbStatus.postCount}</span>
-            </div>
-          </div>
-          
-          {!dbStatus.connected && (
-            <p className="mt-4 text-sm text-yellow-600 dark:text-yellow-500 text-center">
-              ⚠️ Configure DATABASE_URL in .env to connect to MongoDB
-            </p>
-          )}
-        </div>
-
-        {/* Documentation Links */}
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">📚 Dokumentation:</p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <a
-              href="/STRIPE_SETUP.md"
-              className="px-4 py-2 bg-gray-200 dark:bg-secondary rounded hover:bg-gray-300 dark:hover:bg-secondary/80"
-            >
-              Stripe Setup
-            </a>
-            <a
-              href="/SUBSCRIPTION_GUIDE.md"
-              className="px-4 py-2 bg-gray-200 dark:bg-secondary rounded hover:bg-gray-300 dark:hover:bg-secondary/80"
-            >
-              Subscription Guide
-            </a>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

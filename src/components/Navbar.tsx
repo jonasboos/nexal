@@ -4,6 +4,8 @@ import { useSession, signOut } from "@/src/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
+import { useEffect, useState } from "react";
+import { cn } from "@/src/lib/utils";
 
 export default function Navbar() {
   const { data: session, isPending } = useSession();
@@ -16,7 +18,7 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
-      <nav className="w-full max-w-5xl rounded-2xl bg-card/80 backdrop-blur-md shadow-lg transition-all">
+      <nav className="w-full max-w-5xl rounded-2xl transition-all duration-300 bg-card/80 backdrop-blur-md shadow-lg">
         <div className="px-4 sm:px-6">
           <div className="flex justify-between h-14 items-center">
             {/* Logo */}
