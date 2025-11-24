@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, useCallback, ReactNode } from 'react';
 import { useSession } from '@/src/lib/auth-client';
 import Link from 'next/link';
 
@@ -19,19 +19,7 @@ export default function PremiumContent({
   const [hasAccess, setHasAccess] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (isPending) return;
-    
-    if (!session) {
-      setHasAccess(false);
-      setLoading(false);
-      return;
-    }
-
-    checkSubscription();
-  }, [session, isPending]);
-
-  const checkSubscription = async () => {
+  const checkSubscription = useCallback(async () => {
     if (!session?.user?.id) {
       setHasAccess(false);
       setLoading(false);
@@ -41,7 +29,7 @@ export default function PremiumContent({
     try {
       const res = await fetch(`/api/user/subscriptions?userId=${session.user.id}`);
       const data = await res.json();
-      
+
       const activeSubscription = (data.subscriptions || []).find(
         (sub: any) => sub.status === 'active' || sub.status === 'trialing'
       );
@@ -53,7 +41,21 @@ export default function PremiumContent({
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (isPending) return;
+    
+    if (!session) {
+      setHasAccess(false);
+      setLoading(false);
+      return;
+    }
+
+    checkSubscription();
+  }, [session, isPending, checkSubscription]);
+
+  
 
   if (isPending || loading) {
     if (loadingContent) {

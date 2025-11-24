@@ -57,7 +57,7 @@ export default function DashboardPage() {
         >
           <h2 className="text-2xl font-bold text-foreground mb-4">Your Content</h2>
           <div className="bg-card/50 backdrop-blur-sm text-card-foreground rounded-xl shadow-sm border border-border p-8 text-center">
-            <p className="text-muted-foreground mb-4">You haven't created any content yet.</p>
+            <p className="text-muted-foreground mb-4">You haven&apos;t created any content yet.</p>
             <button className="bg-secondary text-secondary-foreground px-4 py-2 rounded-md hover:bg-secondary/80 transition-colors">
               Create New Project
             </button>

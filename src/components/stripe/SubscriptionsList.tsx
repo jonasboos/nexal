@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession } from '@/src/lib/auth-client';
 import Link from 'next/link';
 
@@ -27,13 +27,7 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (session?.user?.id) {
-      fetchSubscriptions();
-    }
-  }, [session?.user?.id]);
-
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     if (!session?.user?.id) return;
 
     try {
@@ -45,7 +39,15 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchSubscriptions();
+    }
+  }, [session?.user?.id, fetchSubscriptions]);
+
+  
 
   const handleCancelSubscription = async (subscriptionId: string) => {
     if (!confirm('Are you sure you want to cancel this subscription? It will remain active until the end of the billing period.')) {
@@ -94,8 +96,8 @@ export default function SubscriptionsList({ onCancelSuccess, onCancelError }: Su
           <h2 className="text-xl font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
             No Active Subscription
           </h2>
-          <p className="text-muted mb-4">
-            You don't have an active subscription. Subscribe to access premium content!
+            <p className="text-muted mb-4">
+            You don&apos;t have an active subscription. Subscribe to access premium content!
           </p>
           <Link
             href="/subscribe"
