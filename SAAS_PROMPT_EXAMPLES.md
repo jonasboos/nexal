@@ -37,4 +37,4 @@ Prisma schema changes + named migration steps.
 
 Local development commands (migrate, build, test).
 
-Next-action checklist for the following step.
+Next-action checklist for the following steps.
