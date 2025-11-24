@@ -7,7 +7,34 @@ on:
   workflow_dispatch:
 
 jobs:
+  translate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate translations
+        run: node scripts/generate-translations.js
+
+      - name: Commit translation files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add messages/*.json
+          git commit -m "chore: auto-generate translation files" --allow-empty
+          git push || true
+
   deploy:
+    needs: translate
     runs-on: ubuntu-latest
     
     steps:

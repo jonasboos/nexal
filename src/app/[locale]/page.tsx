@@ -1,9 +1,12 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/src/i18n/navigation';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('home');
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground transition-colors duration-300 relative overflow-hidden">
       {/* Background Elements */}
@@ -20,10 +23,10 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70">
-              Next.js Template
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              A complete starter template with Authentication, Stripe Subscriptions, and MongoDB.
+              {t('subtitle')}
             </p>
             
             <div className="flex gap-4 justify-center">
@@ -31,13 +34,13 @@ export default function Home() {
                 href="/dashboard"
                 className="px-8 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25"
               >
-                Get Started
+                {t('getStarted')}
               </Link>
               <Link
                 href="/subscribe"
                 className="px-8 py-3 bg-card border border-border text-foreground rounded-xl font-medium hover:bg-accent transition-all"
               >
-                View Pricing
+                {t('viewPricing')}
               </Link>
             </div>
           </motion.div>
