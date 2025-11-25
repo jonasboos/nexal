@@ -66,9 +66,6 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     *
-     * Hinweis: Diese Matcher-Form bleibt erhalten; Next.js empfiehlt den Export "proxy"
-     * statt "middleware". Beide Exporte sind hier verfügbar (proxy ist primär).
      */
     '/((?!api/auth|_next/static|_next/image|favicon.ico).*)',
   ],

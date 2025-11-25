@@ -1,7 +1,7 @@
 import { auth } from '@/src/lib/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import AdminLayoutClient from '@/src/app/admin/admin-layout-client';
+import AdminLayoutClient from '@/src/app/[locale]/admin/admin-layout-client';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth.api.getSession({

@@ -450,6 +450,15 @@ async function main() {
         }
       }
 
+      // Generate translation files for all supported languages
+      try {
+        status('Generating translation files...');
+        execSync('node scripts/generate-translations.js', { stdio: 'ignore' });
+        success('Translation files generated');
+      } catch (translationErr) {
+        warn('Translation file generation encountered issues');
+      }
+
       // Start dev server in background (detached) so we can continue and run the admin script.
       try {
         status('Starting dev server...');

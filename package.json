@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "next dev",
     "prisma:prepare": "prisma generate && prisma db push",
-    "build": "prisma generate && next build",
+    "build": "node scripts/generate-translations.js && prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "init:admin": "node scripts/init-admin.js",
-    "init:admin-api": "node scripts/create-admin-via-api.js"
+    "init:admin-api": "node scripts/create-admin-via-api.js",
+    "translate": "node scripts/generate-translations.js"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
@@ -59,6 +60,9 @@
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "framer-motion": "^12.23.24",
+    "google-translate-api-x": "^10.7.2",
+    "i18next": "^25.6.3",
+    "i18next-scanner": "^4.6.0",
     "lucide-react": "^0.554.0",
     "next": "16.0.1",
     "next-intl": "^4.5.5",
