@@ -74,6 +74,17 @@ jobs:
             echo "should_publish=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Commit any build changes
+        run: |
+          if ! git diff-index --quiet HEAD --; then
+            echo "Committing build changes..."
+            git add .
+            git commit -m "chore: commit build changes [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
       - name: Auto-bump version
         if: steps.check.outputs.should_bump == 'true'
         run: |
