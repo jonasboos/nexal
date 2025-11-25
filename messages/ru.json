@@ -21,7 +21,9 @@
     "pricing": "Цены",
     "dashboard": "Панель управления",
     "products": "Продукты",
-    "admin": "Админ"
+    "admin": "Админ",
+    "signIn": "Войти",
+    "signOut": "Выход"
   },
   "home": {
     "title": "Шаблон Next.js",

@@ -21,7 +21,9 @@
     "pricing": "価格設定",
     "dashboard": "ダッシュボード",
     "products": "製品",
-    "admin": "管理者"
+    "admin": "管理者",
+    "signIn": "サインイン",
+    "signOut": "サインアウト"
   },
   "home": {
     "title": "Next.js テンプレート",

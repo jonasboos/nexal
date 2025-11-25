@@ -21,7 +21,9 @@
     "pricing": "定价",
     "dashboard": "仪表板",
     "products": "产品",
-    "admin": "行政"
+    "admin": "行政",
+    "signIn": "登入",
+    "signOut": "登出"
   },
   "home": {
     "title": "Next.js 模板",
@@ -31,7 +33,7 @@
     "features": "特征",
     "featureAuth": "安全认证",
     "featureAuthDesc": "通过 Better Auth 内置用户身份验证",
-    "featurePayments": "条纹整合",
+    "featurePayments": "条纹集成",
     "featurePaymentsDesc": "无缝处理订阅和付款",
     "featureDatabase": "MongoDB 数据库",
     "featureDatabaseDesc": "适合您的应用程序的可扩展数据库"
@@ -106,7 +108,7 @@
     "currentPlan": "当前计划",
     "upgrade": "升级",
     "downgrade": "降级",
-    "changePlan": "改变计划",
+    "changePlan": "变更计划",
     "billing": "计费",
     "annualBilling": "按年计费",
     "monthlyBilling": "每月计费",

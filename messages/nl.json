@@ -21,7 +21,9 @@
     "pricing": "Prijzen",
     "dashboard": "Dashboard",
     "products": "Producten",
-    "admin": "Beheerder"
+    "admin": "Beheerder",
+    "signIn": "Inloggen",
+    "signOut": "Uitloggen"
   },
   "home": {
     "title": "Next.js-sjabloon",

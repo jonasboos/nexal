@@ -21,7 +21,9 @@
     "pricing": "Prezzi",
     "dashboard": "Pannello di controllo",
     "products": "Prodotti",
-    "admin": "Ammin"
+    "admin": "Ammin",
+    "signIn": "Registrazione",
+    "signOut": "Disconnessione"
   },
   "home": {
     "title": "Modello Next.js",

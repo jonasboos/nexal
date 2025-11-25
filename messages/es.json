@@ -21,7 +21,9 @@
     "pricing": "Precios",
     "dashboard": "Panel",
     "products": "Productos",
-    "admin": "Administradora"
+    "admin": "Administradora",
+    "signIn": "Iniciar sesión",
+    "signOut": "Desconectar"
   },
   "home": {
     "title": "Plantilla siguiente.js",
@@ -100,7 +102,7 @@
   "subscribe": {
     "title": "Elige tu plan",
     "subtitle": "Selecciona el plan perfecto para tus necesidades",
-    "selectPlan": "Seleccionar Plan",
+    "selectPlan": "Seleccionar plan",
     "perMonth": "por mes",
     "features": "Características",
     "currentPlan": "Plan actual",

@@ -21,7 +21,9 @@
     "pricing": "Preços",
     "dashboard": "Painel",
     "products": "Produtos",
-    "admin": "Administrador"
+    "admin": "Administrador",
+    "signIn": "Entrar",
+    "signOut": "Sair"
   },
   "home": {
     "title": "Modelo Next.js",
@@ -58,7 +60,7 @@
     "subtitle": "Digite seu e-mail para redefinir sua senha",
     "email": "Endereço de email",
     "submit": "Enviar link de redefinição",
-    "backToLogin": "Voltar ao Login",
+    "backToLogin": "Voltar ao login",
     "emailSent": "Link de redefinição de senha enviado para seu e-mail",
     "invalidEmail": "Por favor insira um e-mail válido"
   },
@@ -68,7 +70,7 @@
     "newPassword": "Nova Senha",
     "confirmPassword": "Confirme sua senha",
     "submit": "Redefinir senha",
-    "backToLogin": "Voltar ao Login",
+    "backToLogin": "Voltar ao login",
     "passwordUpdated": "Senha atualizada com sucesso!",
     "passwordMismatch": "As senhas não coincidem",
     "passwordTooShort": "A senha deve ter pelo menos 8 caracteres"
@@ -106,7 +108,7 @@
     "currentPlan": "Plano Atual",
     "upgrade": "Atualizar",
     "downgrade": "Downgrade",
-    "changePlan": "Plano de mudança",
+    "changePlan": "Plano de Mudança",
     "billing": "Cobrança",
     "annualBilling": "Faturamento Anual",
     "monthlyBilling": "Faturamento Mensal",

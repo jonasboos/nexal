@@ -21,7 +21,9 @@
     "pricing": "Wycena",
     "dashboard": "Panel",
     "products": "Produkty",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "signIn": "Zalogować się",
+    "signOut": "Wyloguj się"
   },
   "home": {
     "title": "Szablon Next.js",

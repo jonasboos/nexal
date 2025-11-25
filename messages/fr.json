@@ -21,7 +21,9 @@
     "pricing": "Tarifs",
     "dashboard": "Tableau de bord",
     "products": "Produits",
-    "admin": "Administratrice"
+    "admin": "Administratrice",
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter"
   },
   "home": {
     "title": "Modèle Next.js",
