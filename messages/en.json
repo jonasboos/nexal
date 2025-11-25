@@ -21,7 +21,9 @@
     "pricing": "Pricing",
     "dashboard": "Dashboard",
     "products": "Products",
-    "admin": "Admin"
+    "admin": "Admin",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
   },
   "home": {
     "title": "Next.js Template",

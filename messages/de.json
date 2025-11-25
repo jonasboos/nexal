@@ -21,7 +21,9 @@
     "pricing": "Preise",
     "dashboard": "Armaturenbrett",
     "products": "Produkte",
-    "admin": "Admin"
+    "admin": "Admin",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden"
   },
   "home": {
     "title": "Next.js-Vorlage",
