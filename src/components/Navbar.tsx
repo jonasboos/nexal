@@ -24,10 +24,10 @@ export default function Navbar() {
           <div className="flex justify-between h-14 items-center">
             {/* Logo */}
             <div className="flex items-center gap-8">
-              <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
+              <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors focus:outline-none focus-visible:outline-none focus:ring-0">
                 Nexal
               </Link>
-              <Link href="/subscribe" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
+              <Link href="/subscribe" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block focus:outline-none focus-visible:outline-none focus:ring-0">
                 {t('pricing')}
               </Link>
             </div>
@@ -46,12 +46,12 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-3">
                     {/* User Avatar */}
-                    <Link href="/profile" className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm hover:opacity-80 transition-opacity">
+                    <Link href="/profile" className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm hover:opacity-80 transition-opacity focus:outline-none focus-visible:outline-none focus:ring-0">
                       {session.user.name?.charAt(0).toUpperCase() || session.user.email.charAt(0).toUpperCase()}
                     </Link>
                     {/* User Info */}
                     <div className="hidden sm:block">
-                      <Link href="/profile" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline">
+                      <Link href="/profile" className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline focus:outline-none focus-visible:outline-none focus:ring-0">
                         {session.user.name || "User"}
                       </Link>
                     </div>
@@ -59,7 +59,7 @@ export default function Navbar() {
                   {/* Sign Out Button */}
                   <button
                     onClick={handleSignOut}
-                    className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                    className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors focus:outline-none focus-visible:outline-none focus:ring-0"
                     title={t('signOut')}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -72,7 +72,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/login"
-                  className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-colors shadow-sm"
+                  className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-lg transition-colors shadow-sm focus:outline-none focus-visible:outline-none focus:ring-0"
                 >
                   {t('signIn')}
                 </Link>

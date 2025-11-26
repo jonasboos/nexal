@@ -41,7 +41,7 @@ export default async function LocaleLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="grow">
+            <main className="grow pt-6 md:pt-8">
               {children}
             </main>
             <Footer />
