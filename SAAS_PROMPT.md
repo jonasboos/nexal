@@ -7,7 +7,7 @@ The Micro SaaS is centered around an intuitive and powerful Dashboard where user
 Other Pages to Expand and Improve:
 Main Page: Clearly describe the product functionality and benefits. It should match the functionality of the SAAS.
 Legal Pages: Include complete, accessible pages for Impressum, Terms & Conditions (AGB), and Privacy Policy.
-Footer: Ensure it is consistent and links to all relevant pages.
+Footer: Ensure it is consistent and links to all relevant pages, and make the 3d object matching to the SAAS.
 Update also the Mail designs, it should match the SAAS.
 
 Design Guidelines:

@@ -25,7 +25,7 @@ export const auth = betterAuth({
         token = arg1.token;
       } else {
         // (url, user) case
-        url = arg1 as string | undefined;
+        url = arg1 as any as string | undefined;
         userAny = arg2 as any;
       }
 
