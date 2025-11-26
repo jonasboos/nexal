@@ -25,7 +25,7 @@ function isProtectedPath(pathname: string) {
   return protectedRoutes.some(route => normalizedPath.startsWith(route));
 }
 
-// Neue Next.js "proxy" Entrypoint (empfohlene Methode für Middleware-ähnliche Logik)
+// Neue Next.js "proxy" Entrypoint (empfohlene Methode für Middleware-ähnliche Logike)
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
