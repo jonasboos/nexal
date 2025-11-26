@@ -37,6 +37,20 @@ function LoginInner() {
           return;
         }
 
+        // Try to trigger a clean welcome email from the server.
+        // We don't block signup on the email delivery, but we await here
+        // to surface any immediate problems in the UI for debugging.
+        try {
+          await fetch('/api/email/welcome', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name }),
+          });
+        } catch (emailErr) {
+          // log and continue — welcome email failure shouldn't block signup
+          console.error('Welcome email failed', emailErr);
+        }
+
         router.push(redirectTo);
       } else {
         const res: any = await signIn.email({

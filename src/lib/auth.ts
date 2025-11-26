@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma/prisma";
 import { sendEmail } from "./email";
+import { buildResetPasswordEmail } from "./email-templates/reset-password";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -66,11 +67,19 @@ export const auth = betterAuth({
       }
 
       try {
+        // Build a nicer, localized reset-password email
+        const appName = process.env.NEXT_PUBLIC_APP_NAME || 'Nexal';
+        const { subject, text, html } = buildResetPasswordEmail({
+          name: userAny?.name ?? userAny?.user?.name ?? null,
+          url: url ?? undefined,
+          appName,
+        });
+
         const res = await sendEmail({
           to: email,
-          subject: 'Reset your password',
-          text: `Click the link to reset your password: ${url}`,
-          html: `<p>Click the link to reset your password: <a href="${url}">${url}</a></p>`,
+          subject,
+          text,
+          html,
         });
         console.debug('[auth] sendResetPassword: sendEmail resolved', { userId, to: email, status: res?.$metadata?.httpStatusCode || 'unknown' });
       } catch (err) {
