@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "check-domains": "node scripts/check-domains.js",
     "prisma:prepare": "prisma generate && prisma db push",
     "build": "node scripts/generate-translations.js && prisma generate && next build",
     "start": "next start",
@@ -35,6 +36,7 @@
     "public",
     "index.js",
     "scripts",
+    "messages",
     "docker-compose.yml",
     "Dockerfile",
     "*.config.*",

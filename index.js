@@ -94,6 +94,7 @@ function copyTemplates(templatePath, projectPath) {
     'index.js',
     'package.json',
     'scripts',
+    'messages',
     'docker-compose.yml',
     'Dockerfile',
     '.env.example',
