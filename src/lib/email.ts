@@ -19,6 +19,8 @@ export async function sendEmail({
   text: string;
   html?: string;
 }) {
+  // Debug: log attempt (avoid logging secrets)
+  console.debug('[email] sendEmail called', { to, subject });
   const command = new SendEmailCommand({
     Source: process.env.AWS_SES_FROM_EMAIL,
     Destination: {
@@ -42,7 +44,9 @@ export async function sendEmail({
   });
 
   try {
-    return await sesClient.send(command);
+    const res = await sesClient.send(command);
+    console.debug('[email] sendEmail success', { to, subject, status: res?.$metadata?.httpStatusCode || 'unknown' });
+    return res;
   } catch (error) {
     console.error("Error sending email via SES:", error);
     throw error;

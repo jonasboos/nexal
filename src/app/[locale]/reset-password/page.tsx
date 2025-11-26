@@ -31,13 +31,34 @@ function ResetPasswordInner() {
     setIsSubmitting(true);
     setError('');
 
+    const token = searchParams.get('token');
+
     try {
+      // Pass token explicitly when available. Some client implementations
+      // expect the token in the body instead of reading from the URL.
       await authClient.resetPassword({
         newPassword: password,
+        token: token ?? undefined,
       });
       router.push('/login?message=Password reset successfully');
     } catch (err: any) {
-      setError(err.message || 'Failed to reset password. The link may be invalid or expired.');
+      // If the client helper fails, try a direct POST to the framework endpoint
+      // to get more detailed error information from the server.
+      try {
+        const res = await fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ newPassword: password, token }),
+        });
+        if (res.ok) {
+          router.push('/login?message=Password reset successfully');
+          return;
+        }
+        const body = await res.text();
+        setError(body || `Reset failed with status ${res.status}`);
+      } catch (fetchErr: any) {
+        setError(fetchErr?.message || 'Failed to reset password. The link may be invalid or expired.');
+      }
     } finally {
       setIsSubmitting(false);
     }
