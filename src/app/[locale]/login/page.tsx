@@ -12,9 +12,39 @@ function LoginInner() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get('redirect') || '/';
+
+  // Check if email exists when user is signing up
+  const checkEmailExists = async (emailToCheck: string) => {
+    if (!emailToCheck || activeTab !== "signup") {
+      setEmailExists(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailToCheck }),
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setEmailExists(data.exists);
+      }
+    } catch (err) {
+      console.error('Error checking email:', err);
+    }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+    checkEmailExists(newEmail);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +61,17 @@ function LoginInner() {
 
         // better-auth client may return a result object instead of throwing.
         if (res && (res.error || res.ok === false)) {
-          const message = (res.error && (res.error.message || res.error)) || 'Registration failed';
+          let message = (res.error && (res.error.message || res.error)) || 'Registration failed';
+          
+          // Check for duplicate email error
+          if (typeof message === 'string' && (
+            message.includes('already exists') || 
+            message.includes('duplicate') ||
+            message.includes('email')
+          )) {
+            message = 'This email is already registered. Please sign in instead or use a different email.';
+          }
+          
           setError(typeof message === 'string' ? message : JSON.stringify(message));
           setLoading(false);
           return;
@@ -153,11 +193,16 @@ function LoginInner() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 required
                 className="flex h-11 w-full rounded-xl border border-gray-200 dark:border-transparent bg-transparent dark:bg-secondary px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-gray-300"
                 placeholder="name@example.com"
               />
+              {activeTab === "signup" && emailExists && (
+                <p className="text-xs text-red-600 dark:text-red-400">
+                  This email is already registered. Please sign in instead or use a different email.
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -181,7 +226,7 @@ function LoginInner() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (activeTab === "signup" && emailExists)}
               className="inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-gray-300 bg-gray-900 text-gray-50 hover:bg-gray-900/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 h-11 w-full shadow-md"
             >
               {loading ? (
