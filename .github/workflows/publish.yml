@@ -76,13 +76,19 @@ jobs:
 
       - name: Commit any build changes
         run: |
-          if ! git diff-index --quiet HEAD --; then
-            echo "Committing build changes..."
-            git add .
-            git commit -m "chore: commit build changes [skip ci]"
-            git push
-          else
+          echo "Checking for build changes to commit..."
+          # Stage all changes produced by the build
+          git add -A
+
+          # If there are staged changes, commit and push them. Use the cached diff
+          # to check staged vs HEAD so we reliably detect build-generated changes.
+          if git diff --cached --quiet; then
             echo "No changes to commit"
+          else
+            echo "Committing build changes..."
+            # Commit may fail if user config or hooks are present; don't fail the job.
+            git commit -m "chore: commit build changes [skip ci]" || echo "git commit had no-op or failed"
+            git push || echo "git push failed (continuing)"
           fi
 
       - name: Auto-bump version
