@@ -1,6 +1,6 @@
 {
   "name": "nexal",
-  "version": "1.0.77",
+  "version": "1.0.78",
   "description": "Ein vollständiges Next.js Starter-Template",
   "main": "index.js",
   "scripts": {
