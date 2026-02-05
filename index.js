@@ -384,10 +384,11 @@ async function main() {
       // V2 Specific: Run Go Script
       console.log(`\n${colors.cyan}Running Go processing script...${colors.reset}`);
       try {
-          const goScriptPath = path.join(targetDir, 'golang', 'cmd', 'krebs-scraper', 'main.go');
+          const goDir = path.join(targetDir, 'golang');
+          const goScriptPath = path.join(goDir, 'cmd', 'krebs-scraper', 'main.go');
           if (fs.existsSync(goScriptPath)) {
-               console.log(`Executing: go run golang/cmd/krebs-scraper/main.go -url ${projectUrl}`);
-               execSync(`go run golang/cmd/krebs-scraper/main.go -url ${projectUrl}`, { cwd: targetDir, stdio: 'inherit' });
+               console.log(`Executing: go run cmd/krebs-scraper/main.go -url ${projectUrl}`);
+               execSync(`go run cmd/krebs-scraper/main.go -url ${projectUrl}`, { cwd: goDir, stdio: 'inherit' });
           } else {
                console.log(`${colors.yellow}Go script not found at ${goScriptPath}, skipping.${colors.reset}`);
           }
