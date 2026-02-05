@@ -1,65 +1,89 @@
-import Image from "next/image";
+import { ArrowRight, Check, Zap, Shield, Globe } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col items-center">
+      {/* Hero Section */}
+      <section className="flex w-full flex-col items-center justify-center space-y-10 py-24 px-4 text-center sm:px-8 md:py-32 lg:py-40">
+         <div className="inline-flex items-center rounded-full border border-zinc-200 bg-white/50 px-3 py-1 text-sm font-medium text-zinc-800 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/50 dark:text-zinc-200">
+           <span className="mr-2 flex h-2 w-2 relative">
+             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+             <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+           </span>
+           v2.0 is now available
+         </div>
+        
+        <h1 className="max-w-4xl text-5xl font-bold tracking-tight text-zinc-900 sm:text-6xl lg:text-7xl dark:text-zinc-50">
+          Build <span className="text-blue-600 dark:text-blue-500">better</span> apps, <br className="hidden sm:inline" /> faster than ever.
+        </h1>
+        
+        <p className="max-w-2xl text-lg text-zinc-600 dark:text-zinc-400 sm:text-xl">
+          A maximal clean, production-ready starting point for your next big idea. 
+          Powered by Next.js 15, Tailwind CSS, and a focus on premium aesthetics.
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link
+            href="#"
+            className="flex items-center justify-center rounded-lg bg-zinc-900 px-8 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            Get Started <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+          <Link
+            href="https://github.com/jonasboos/nexal"
+            target="_blank"
+            className="flex items-center justify-center rounded-lg border border-zinc-200 bg-white px-8 py-3 text-sm font-medium text-zinc-900 transition-all hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            GitHub
+          </Link>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section id="features" className="container mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:grid-cols-2 lg:grid-cols-3 sm:px-8">
+        {[
+          {
+            icon: Zap,
+            title: "Lightning Fast",
+            description: "Built on Next.js 15 with Server Components for optimal performance.",
+          },
+          {
+            icon: Shield,
+            title: "Type Safe",
+            description: "End-to-end type safety with TypeScript and strict ESLint configuration.",
+          },
+          {
+            icon: Globe,
+            title: "Modern Stack",
+            description: "Tailwind CSS v4, Lucide Icons, and Next-Themes for dark mode.",
+          },
+        ].map((feature, i) => (
+          <div
+            key={i}
+            className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-white p-8 transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
+          >
+            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
+              <feature.icon className="h-5 w-5 text-zinc-900 dark:text-zinc-100" />
+            </div>
+            <h3 className="mb-2 text-lg font-semibold text-zinc-900 dark:text-zinc-100">{feature.title}</h3>
+            <p className="text-zinc-600 dark:text-zinc-400">{feature.description}</p>
+          </div>
+        ))}
+      </section>
+
+       {/* Footer */}
+      <footer className="w-full border-t border-zinc-200 py-10 dark:border-zinc-800">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-8">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            © {new Date().getFullYear()} Nexal Template. All rights reserved.
           </p>
+           <div className="flex gap-4">
+             <Link href="#" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">Privacy</Link>
+             <Link href="#" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">Terms</Link>
+           </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </footer>
     </div>
   );
 }
