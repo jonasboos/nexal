@@ -1,0 +1,54 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "docs": "Docs",
+    "pricing": "Pricing"
+  },
+  "Hero": {
+    "badge": "Innovating the future",
+    "title": "We build <highlight>digital</highlight> <br> experiences.",
+    "description": "Lumina is a forward-thinking technology company dedicated to creating impactful digital solutions for businesses worldwide.",
+    "getStarted": "Get in Touch",
+    "learnMore": "Learn More"
+  },
+  "Features": {
+    "title1": "Performance First",
+    "desc1": "We optimized every aspect of our workflow to deliver blazing fast results.",
+    "title2": "Secure by Design",
+    "desc2": "Security is not an afterthought. It is embedded in our core philosophy.",
+    "title3": "Global Reach",
+    "desc3": "Connecting businesses and customers across borders seamlessly."
+  },
+  "Footer": {
+    "description": "Lumina Inc. All rights reserved.",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "About": {
+    "title": "About Lumina",
+    "intro": "At Lumina, we believe that technology should be an enabler, not a barrier. Founded in 2024, our mission is to simplify the complex and illuminate the path forward.",
+    "philosophy": "We adhere to a philosophy of minimalist excellence.",
+    "valuesTitle": "Our Values",
+    "value1": "Clarity: We value clear communication and transparent code.",
+    "value2": "Quality: We do not compromise on the standards of our engineering.",
+    "value3": "Impact: We build software that makes a tangible difference."
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "subtitle": "Ready to start your next project? We'd love to hear from you.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "Legal": {
+    "privacyTitle": "Privacy Policy",
+    "privacyLastUpdated": "Last updated",
+    "termsTitle": "Terms of Service",
+    "imprintTitle": "Imprint / Impressum"
+  }
+}

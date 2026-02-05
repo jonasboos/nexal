@@ -1,7 +1,12 @@
-import { ArrowRight, Check, Zap, Shield, Globe } from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Zap, Shield, Globe } from "lucide-react";
+import { Link } from '@/i18n/routing';
+import { Footer } from "@/components/footer";
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('Hero');
+  const tFeatures = useTranslations('Features');
+
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
@@ -11,31 +16,29 @@ export default function Home() {
              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
            </span>
-           v2.0 is now available
+           {t('badge')}
          </div>
         
-        <h1 className="max-w-4xl text-5xl font-bold tracking-tight text-zinc-900 sm:text-6xl lg:text-7xl dark:text-zinc-50">
-          Build <span className="text-blue-600 dark:text-blue-500">better</span> apps, <br className="hidden sm:inline" /> faster than ever.
-        </h1>
+        <h1 className="max-w-4xl text-5xl font-bold tracking-tight text-zinc-900 sm:text-6xl lg:text-7xl dark:text-zinc-50"
+            dangerouslySetInnerHTML={{ __html: t.raw('title').replace('<highlight>', '<span class="text-blue-600 dark:text-blue-500">').replace('</highlight>', '</span>') }}
+        />
         
         <p className="max-w-2xl text-lg text-zinc-600 dark:text-zinc-400 sm:text-xl">
-          A maximal clean, production-ready starting point for your next big idea. 
-          Powered by Next.js 15, Tailwind CSS, and a focus on premium aesthetics.
+          {t('description')}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
-            href="#"
+            href="/contact"
             className="flex items-center justify-center rounded-lg bg-zinc-900 px-8 py-3 text-sm font-medium text-white transition-all hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
-            Get Started <ArrowRight className="ml-2 h-4 w-4" />
+            {t('getStarted')} <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
           <Link
-            href="https://github.com/jonasboos/nexal"
-            target="_blank"
+            href="/about"
             className="flex items-center justify-center rounded-lg border border-zinc-200 bg-white px-8 py-3 text-sm font-medium text-zinc-900 transition-all hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:ring-offset-2 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
           >
-            GitHub
+            {t('learnMore')}
           </Link>
         </div>
       </section>
@@ -45,18 +48,18 @@ export default function Home() {
         {[
           {
             icon: Zap,
-            title: "Lightning Fast",
-            description: "Built on Next.js 15 with Server Components for optimal performance.",
+            title: tFeatures('title1'),
+            description: tFeatures('desc1'),
           },
           {
             icon: Shield,
-            title: "Type Safe",
-            description: "End-to-end type safety with TypeScript and strict ESLint configuration.",
+            title: tFeatures('title2'),
+            description: tFeatures('desc2'),
           },
           {
             icon: Globe,
-            title: "Modern Stack",
-            description: "Tailwind CSS v4, Lucide Icons, and Next-Themes for dark mode.",
+            title: tFeatures('title3'),
+            description: tFeatures('desc3'),
           },
         ].map((feature, i) => (
           <div
@@ -72,18 +75,7 @@ export default function Home() {
         ))}
       </section>
 
-       {/* Footer */}
-      <footer className="w-full border-t border-zinc-200 py-10 dark:border-zinc-800">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-8">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            © {new Date().getFullYear()} Nexal Template. All rights reserved.
-          </p>
-           <div className="flex gap-4">
-             <Link href="#" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">Privacy</Link>
-             <Link href="#" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">Terms</Link>
-           </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
