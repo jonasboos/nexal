@@ -24,7 +24,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Studios */}
+      {/* Studio */}
       <section className="border-t border-default bg-card px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
