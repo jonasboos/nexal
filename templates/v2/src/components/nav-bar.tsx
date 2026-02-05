@@ -37,7 +37,7 @@ export function NavBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Scroll to top on route change
+  // Scroll to top on route changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
