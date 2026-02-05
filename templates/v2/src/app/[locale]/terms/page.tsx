@@ -44,7 +44,7 @@ export default function TermsPage() {
           <p>We may revise these terms of service at any time without notice. By using this website you agree to be bound by the current version.</p>
           
           <h2>6. Governing Law</h2>
-          <p>These terms and conditions are governed by and construed in accordance with the laws of Germany.</p>
+          <p>These terms and conditions are governed by and construed in accordance with the laws of Switzerland.</p>
           </div>
         </div>
 
