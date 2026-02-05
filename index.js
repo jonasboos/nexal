@@ -4,6 +4,7 @@ const { execSync, spawnSync, spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const readline = require('readline');
 
 // ============================================================================
 // Console Output Utilities
@@ -40,7 +41,7 @@ function section(title) {
 }
 
 // ============================================================================
-// File System Utilities (from lib/fs-utils.js)
+// File System Utilities
 // ============================================================================
 
 function ensureDir(dir) {
@@ -66,6 +67,7 @@ function writeJsonFile(filePath, obj) {
   ensureDir(path.dirname(filePath));
   fs.writeFileSync(filePath, JSON.stringify(obj, null, 2), 'utf8');
 }
+
 function copyRecursive(src, dest, options = {}) {
   const skipNames = options.skipNames || [];
   try {
@@ -80,19 +82,19 @@ function copyRecursive(src, dest, options = {}) {
       copyFileSync(src, dest);
     }
   } catch (err) {
-    // stille Warnung, damit Template-Kopierlauf nicht abbricht
     console.warn(`Warnung beim Kopieren ${src}: ${err.message}`);
   }
 }
 
-function copyTemplates(templatePath, projectPath) {
-  // Keep this list in sync with package.json -> files
-  // Base template files to copy into the new project
+// ============================================================================
+// V1 Specific Logic
+// ============================================================================
+
+function copyV1(templatePath, projectPath) {
+  // Keep this list in sync with V1 structure
   const filesToCopy = [
     'src',
     'public',
-    'index.js',
-    'package.json',
     'scripts',
     'messages',
     'docker-compose.yml',
@@ -100,199 +102,71 @@ function copyTemplates(templatePath, projectPath) {
     '.env.example',
     '.gitignore',
     '.gitattributes',
+    'package.json',
     'README.md',
-    // common config files (keep in sync with package.json files/globs)
     'tsconfig.json',
     'next.config.ts',
     'tailwind.config.ts',
     'postcss.config.mjs',
     'eslint.config.mjs',
-    // Additional deployment helpers (not part of published package 'files')
     'upload-env-secrets.ps1',
     'upload-env-secrets.sh',
-    '.github',
-    "SAAS_PROMPT.md",
-    
+    'SAAS_PROMPT.md',
+    'STRIPE_SETUP.md',
+    'init.py'
   ];
 
-  // Dateien/Varianten, die wir beim Kopieren standardmäßig überspringen wollen
-  // (keine generische `auth.ts` mehr - nur DB/provider-spezifische Varianten)
-  const skipNames = ['auth.postgresql.ts', 'auth.mongodb.ts', 'schema.postgresql.prisma', 'schema.mongodb.prisma', 'publish.yml'];
+  const skipNames = ['node_modules', '.next', 'dist', 'build', '.git'];
 
   for (const file of filesToCopy) {
     const srcPath = path.join(templatePath, file);
     const destPath = path.join(projectPath, file);
     if (!fs.existsSync(srcPath)) continue;
-    try {
-      const stat = fs.statSync(srcPath);
-      if (stat.isDirectory()) {
-        copyRecursive(srcPath, destPath, { skipNames });
-      } else {
-        copyFileSync(srcPath, destPath);
-      }
-    } catch (err) {
-      // ignore individual copy errors to keep output concise
+    
+    // Check if it's a directory or file
+    const stat = fs.statSync(srcPath);
+    if (stat.isDirectory()) {
+      copyRecursive(srcPath, destPath, { skipNames });
+    } else {
+      copyFileSync(srcPath, destPath);
     }
   }
-
-  // Immer das schema.prisma aus der Vorlage kopieren (Quelle: src/prisma/schema.prisma)
-  // Ziel im neuen Projekt: src/prisma/schema.prisma
-  const schemaSrc = path.join(templatePath, 'src', 'prisma', 'schema.prisma');
-  const schemaDest = path.join(projectPath, 'src', 'prisma', 'schema.prisma');
-
-  if (fs.existsSync(schemaSrc)) {
-    ensureDir(path.dirname(schemaDest));
-    copyFileSync(schemaSrc, schemaDest);
-  } else {
-    // No warning for missing schema to keep output clean
+  
+  // Special case for .gitignore (sometimes renamed to gitignore)
+  if (!fs.existsSync(path.join(projectPath, '.gitignore')) && fs.existsSync(path.join(templatePath, 'gitignore'))) {
+      copyFileSync(path.join(templatePath, 'gitignore'), path.join(projectPath, '.gitignore'));
   }
 
-  // Ensure scripts folder is copied robustly (use fs.cpSync when available)
-  try {
-    const scriptsSrc = path.join(templatePath, 'scripts');
-    const scriptsDest = path.join(projectPath, 'scripts');
-    if (fs.existsSync(scriptsSrc)) {
-      // Prefer fs.cpSync (Node 16+) for a robust recursive copy
-      if (typeof fs.cpSync === 'function') {
-        try {
-          fs.cpSync(scriptsSrc, scriptsDest, { recursive: true });
-        } catch (e) {
-          // fallback to our copyRecursive
-          copyRecursive(scriptsSrc, scriptsDest, { skipNames });
-        }
-      } else {
-        copyRecursive(scriptsSrc, scriptsDest, { skipNames });
-      }
-    }
-  } catch (e) {
-    // keep quiet; copying will have been attempted above
-  }
-
-  // Some registries / npm packing flows may change or drop files that start
-  // with a dot (for example .gitignore). To be robust we look for a
-  // non-dotted 'gitignore' filename in the template and copy it to the
-  // destination as '.gitignore' if the dotted version was not copied.
-  try {
-    const altGitignoreSrc = path.join(templatePath, 'gitignore');
-    const destGitignore = path.join(projectPath, '.gitignore');
-
-    // If destination doesn't have a .gitignore, but template shipped a
-    // 'gitignore' file (without leading dot), copy/rename it.
-    if (!fs.existsSync(destGitignore) && fs.existsSync(altGitignoreSrc)) {
-      ensureDir(path.dirname(destGitignore));
-      try {
-        copyFileSync(altGitignoreSrc, destGitignore);
-        console.log("Copied gitignore -> .gitignore (template provided 'gitignore')");
-      } catch (e) {
-        // don't fail the whole copy process for this
-        console.warn('Could not copy gitignore to .gitignore:', e && e.message ? e.message : e);
-      }
-    }
-  } catch (e) {
-    // ignore any failure here
-  }
-}
-
-// ============================================================================
-// Main Application
-// ============================================================================
-
-const projectName = process.argv[2] || ".";
-const targetDir = path.resolve(process.cwd(), projectName);
-
-async function main() {
-  clearScreen();
-  section(`🚀 Projet Setup: ${projectName}`);
-
-  const projectPath = targetDir;
-
-  if (projectName !== "." && require('fs').existsSync(projectPath)) {
-    console.error(`${colors.red}✗ Error: Directory already exists: ${projectName}${colors.reset}`);
-    process.exit(1);
-  }
-
-  try {
-    ensureDir(projectPath);
-    // Template source directory
-    const templatePath = __dirname;
-
-    status('Copying template files...');
-
-    // Prioritized copy: ensure docker-compose and Dockerfile exist in the
-    // target project immediately so attempts to run `docker compose` won't
-    // fail due to file-not-found when we ask to start mongodb right after.
-    const prioritized = ['docker-compose.yml', 'Dockerfile'];
-    for (const f of prioritized) {
-      try {
-        const src = path.join(templatePath, f);
-        const dest = path.join(projectPath, f);
-        if (fs.existsSync(src)) {
-          copyFileSync(src, dest);
-        }
-      } catch (e) {
-        // silent
-      }
-    }
-
-    // Copy GitHub Actions workflow from deployment folder to .github/workflows
-    try {
+  // Copy deployment workflow
+   try {
       const workflowSrc = path.join(templatePath, 'deployment', 'deploy.yml');
       const workflowDest = path.join(projectPath, '.github', 'workflows', 'deploy.yml');
       if (fs.existsSync(workflowSrc)) {
         ensureDir(path.dirname(workflowDest));
         copyFileSync(workflowSrc, workflowDest);
       }
-    } catch (e) {
-      // silent
-    }
+    } catch (e) { }
 
-    // Copy deployment scripts (PowerShell and Bash)
-    try {
-      const psScriptSrc = path.join(templatePath, 'upload-env-secrets.ps1');
-      const psScriptDest = path.join(projectPath, 'upload-env-secrets.ps1');
-      if (fs.existsSync(psScriptSrc)) {
-        copyFileSync(psScriptSrc, psScriptDest);
-      }
+}
 
-      const shScriptSrc = path.join(templatePath, 'upload-env-secrets.sh');
-      const shScriptDest = path.join(projectPath, 'upload-env-secrets.sh');
-      if (fs.existsSync(shScriptSrc)) {
-        copyFileSync(shScriptSrc, shScriptDest);
-        try {
-          fs.chmodSync(shScriptDest, 0o755);
-        } catch (e) {
-          // Ignore chmod errors on Windows
-        }
-      }
-    } catch (e) {
-      // silent
-    }
-
-    // copy remaining templates
-    copyTemplates(templatePath, projectPath);
-    success('Template files copied');
-
+async function setupV1(projectPath, projectName) {
     // package.json anpassen
     const packageJsonPath = path.join(projectPath, 'package.json');
     const packageJson = readJsonFile(packageJsonPath);
     if (packageJson) {
       packageJson.name = projectName;
       packageJson.version = '0.1.0';
-      delete packageJson.bin;
-      delete packageJson.files;
       writeJsonFile(packageJsonPath, packageJson);
     }
 
-    status('Configuring project...');
-
+    status('Configuring V1 project...');
     process.chdir(projectPath);
 
-    // Ask about MongoDB first: use existing or start docker-compose MongoDB
+    // MongoDB Setup
     let dbUrl = null;
     try {
-      const readline = require('readline');
       const rlDb = readline.createInterface({ input: process.stdin, output: process.stdout });
-      const askDb = (q) => new Promise((resolve) => rlDb.question(q, resolve));
+      const askDb = (q) => new Promise((resolve) => rlDb.question(q, resolve)); // local helper
       console.log('');
       const hasDbAns = (await askDb(`${colors.bright}MongoDB Setup${colors.reset}\nHast du bereits eine MongoDB? (j/N): `)).trim().toLowerCase();
       if (hasDbAns === 'j' || hasDbAns === 'y' || hasDbAns === 'yes') {
@@ -302,16 +176,13 @@ async function main() {
         success('MongoDB URL configured');
       } else {
         rlDb.close();
-        // Start mongodb via docker-compose if available
         try {
           status('Starting MongoDB via Docker Compose...');
           let res = spawnSync('docker', ['compose', '-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'ignore' });
           if (res.status !== 0) {
-            // fallback to docker-compose
             res = spawnSync('docker-compose', ['-f', 'docker-compose.yml', 'up', '-d', 'mongodb'], { stdio: 'ignore' });
           }
           if (res.status === 0) {
-            // give container time to initialize
             await new Promise((r) => setTimeout(r, 3000));
             dbUrl = 'mongodb://admin:admin123@localhost:27017/vorlage?replicaSet=rs0&authSource=admin';
             success('MongoDB started locally');
@@ -322,231 +193,183 @@ async function main() {
           warn('Docker Compose startup failed');
         }
       }
-    } catch (err) {
-      // ignore prompt errors and continue
-    }
+    } catch (err) {}
 
-    // Create a .env file with a randomized BETTER_AUTH_SECRET if one doesn't already exist.
+    // .env setup
     try {
-      const envPath = path.join(projectPath, '.env');
-      const examplePath = path.join(projectPath, '.env.example');
-
-      function parseEnv(content) {
-        const map = {};
-        if (!content) return map;
-        content.split(/\r?\n/).forEach((line) => {
-          const m = line.match(/^\s*([^#=\s]+)\s*=\s*(.*)$/);
-          if (m) {
-            map[m[1]] = m[2];
-          }
-        });
-        return map;
-      }
-
-      if (fs.existsSync(envPath)) {
-        // Merge missing keys from .env.example into existing .env (do not overwrite existing values)
-  console.log('Merging .env.example into .env (if needed)');
-        const envContents = fs.readFileSync(envPath, 'utf8');
-        const exampleContents = fs.existsSync(examplePath) ? fs.readFileSync(examplePath, 'utf8') : '';
-
-        const envMap = parseEnv(envContents);
-        const exMap = parseEnv(exampleContents);
-
-        let updated = envContents;
-        let changed = false;
-
-        for (const key of Object.keys(exMap)) {
-          if (!(key in envMap)) {
-            if (updated && !updated.endsWith('\n')) updated += '\n';
-            updated += `${key}=${exMap[key]}\n`;
-            changed = true;
-          }
-        }
-
-        // If user provided a DB URL or docker-compose started DB, ensure DATABASE_URL is set/overwritten
-        if (dbUrl) {
-          if (/^\s*DATABASE_URL\s*=.*$/m.test(updated)) {
-            updated = updated.replace(/^\s*DATABASE_URL\s*=.*$/m, `DATABASE_URL="${dbUrl}"`);
-          } else {
-            if (updated && !updated.endsWith('\n')) updated += '\n';
-            updated += `DATABASE_URL="${dbUrl}"\n`;
-          }
-          changed = true;
-        }
-
-        // Ensure BETTER_AUTH_SECRET exists
-        if (!/^\s*BETTER_AUTH_SECRET\s*=.*$/m.test(updated)) {
-          const secret = crypto.randomBytes(32).toString('base64');
-          if (updated && !updated.endsWith('\n')) updated += '\n';
-          updated += `BETTER_AUTH_SECRET="${secret}"\n`;
-          changed = true;
-        }
-
-        if (changed) {
-          fs.writeFileSync(envPath, updated, 'utf8');
-          success('.env configured');
-        }
-      } else {
-        // Create new .env using .env.example as base and add BETTER_AUTH_SECRET
+        const envPath = path.join(projectPath, '.env');
+        const examplePath = path.join(projectPath, '.env.example');
         let contents = '';
-        if (fs.existsSync(examplePath)) {
-          contents = fs.readFileSync(examplePath, 'utf8');
-        }
-
-        // Ensure DATABASE_URL from prompt/docker is set in new .env
+        if (fs.existsSync(examplePath)) contents = fs.readFileSync(examplePath, 'utf8');
+        
         if (dbUrl) {
-          if (/^\s*DATABASE_URL\s*=.*$/m.test(contents)) {
-            contents = contents.replace(/^\s*DATABASE_URL\s*=.*$/m, `DATABASE_URL="${dbUrl}"`);
-          } else {
-            if (contents && !contents.endsWith('\n')) contents += '\n';
-            contents += `DATABASE_URL="${dbUrl}"\n`;
-          }
+             if (/^\s*DATABASE_URL\s*=.*$/m.test(contents)) {
+                contents = contents.replace(/^\s*DATABASE_URL\s*=.*$/m, `DATABASE_URL="${dbUrl}"`);
+             } else {
+                contents += `\nDATABASE_URL="${dbUrl}"\n`;
+             }
         }
 
-        // Generate a secure random secret (base64) and insert or append it to the .env contents
         const secret = crypto.randomBytes(32).toString('base64');
         const secretLine = `BETTER_AUTH_SECRET="${secret}"`;
-
         if (/^\s*BETTER_AUTH_SECRET\s*=.*$/m.test(contents)) {
-          contents = contents.replace(/^\s*BETTER_AUTH_SECRET\s*=.*$/m, secretLine);
+             contents = contents.replace(/^\s*BETTER_AUTH_SECRET\s*=.*$/m, secretLine);
         } else {
-          if (contents && !contents.endsWith('\n')) contents += '\n';
-          contents += `${secretLine}\n`;
+             contents += `\n${secretLine}\n`;
         }
-
+        
         fs.writeFileSync(envPath, contents, 'utf8');
-        success('.env created');
-      }
-    } catch (err) {
-      warn('Could not create/update .env');
-    }
+        success('.env configured');
+    } catch(e) { warn('Could not configure .env'); }
 
-    // Try to run Prisma generate/db push first. If Prisma CLI (npx) isn't available
-    // because dependencies haven't been installed, run `npm install` and retry.
+    // Prisma & Install
     try {
-      status('Setting up database...');
-
-      const schemaPath = path.join('src', 'prisma', 'schema.prisma');
-
-      function runPrismaCommands() {
-        // Always run prisma generate and prisma db push without passing a
-        // specific schema path. Rely on Prisma's default discovery of
-        // schema.prisma in the project (or the CLI's defaults).
-        execSync('npx prisma generate', { stdio: 'ignore' });
-        execSync('npx prisma db push', { stdio: 'ignore' });
-      }
-
-      try {
-        runPrismaCommands();
-        success('Database setup complete');
-      } catch (prismaErr) {
-        status('Running npm install...');
+        status('Installing dependencies & setting up database...');
         execSync('npm install', { stdio: 'ignore' });
-        // retry
+        
         try {
-          runPrismaCommands();
-          success('Database setup complete');
-        } catch (prismaErr2) {
-          warn('Database setup encountered issues');
-        }
-      }
-
-      // Generate translation files for all supported languages
-      try {
-        status('Generating translation files...');
-        execSync('node scripts/generate-translations.js', { stdio: 'ignore' });
-        success('Translation files generated');
-      } catch (translationErr) {
-        warn('Translation file generation encountered issues');
-      }
-
-      // Start dev server in background (detached) so we can continue and run the admin script.
-      try {
-        status('Starting dev server...');
+             execSync('npx prisma generate', { stdio: 'ignore' });
+             execSync('npx prisma db push', { stdio: 'ignore' });
+             success('Database setup complete');
+        } catch(e) { warn('Database setup failed (Prisma)'); }
+        
+        try {
+             execSync('node scripts/generate-translations.js', { stdio: 'ignore' });
+        } catch(e) {}
+        
+    } catch (e) { warn('Dependency install failed'); }
+    
+    // Start Dev Server & Admin Setup
+    try {
+        status('Starting dev server to run admin script...');
         let dev;
         if (process.platform === 'win32') {
-          // On Windows use `start` to spawn an independent window/process that won't die with this script
-          // start requires a title argument, provide empty title "" before the command
-          dev = spawn('cmd', ['/c', 'start', '""', 'npm', 'run', 'dev'], { stdio: 'ignore', detached: true });
+           dev = spawn('cmd', ['/c', 'start', '""', 'npm', 'run', 'dev'], { stdio: 'ignore', detached: true });
         } else {
-          // POSIX: spawn detached child
-          dev = spawn('npm', ['run', 'dev'], { stdio: 'ignore', detached: true });
+           dev = spawn('npm', ['run', 'dev'], { stdio: 'ignore', detached: true });
         }
         if (dev && typeof dev.unref === 'function') dev.unref();
-        // give the server a moment to boot so HTTP endpoints may be reachable
-        await new Promise((resolve) => setTimeout(resolve, 2500));
-        success('Dev server started (http://localhost:3000)');
-      } catch (devErr) {
-        warn('Could not start dev server');
-      }
-
-      // Prompt for admin credentials and run create-admin-via-api.js in the newly created project
-      const readline = require('readline');
-      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-
-      const ask = (q) => new Promise((resolve) => rl.question(q, resolve));
-
-      console.log('');
-      const email = (await ask(`${colors.bright}Admin Setup${colors.reset}\nAdmin E-Mail (leer = überspringen): `)).trim();
-      if (!email) {
-        rl.close();
-      } else {
-        const password = (await ask('Admin Passwort: ')).trim();
-        const name = (await ask('Admin Name (optional): ')).trim();
-        const baseUrlInput = (await ask('Base URL (optional, default http://localhost:3000): ')).trim();
-        const baseUrl = baseUrlInput || 'http://localhost:3000';
-        rl.close();
-
-        const scriptPath = path.join(projectPath, 'scripts', 'create-admin-via-api.js');
-        if (!fs.existsSync(scriptPath)) {
-          console.warn('Admin script not found, skipping.');
+        
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        
+        // Admin prompt
+        const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const ask = (q) => new Promise((resolve) => rl.question(q, resolve));
+        
+        console.log('');
+        const email = (await ask(`${colors.bright}Admin Setup${colors.reset}\nAdmin E-Mail (leer = überspringen): `)).trim();
+        if (email) {
+            const password = (await ask('Admin Passwort: ')).trim();
+            const name = (await ask('Admin Name (optional): ')).trim();
+            rl.close();
+            
+            const scriptPath = path.join(projectPath, 'scripts', 'create-admin-via-api.js');
+            if (fs.existsSync(scriptPath)) {
+                const node = process.execPath;
+                spawnSync(node, [scriptPath, email, password, name||'', 'http://localhost:3000'], { stdio: 'ignore' });
+                success('Admin created');
+            }
         } else {
-          console.log('Running admin script...');
-          // Use spawnSync to avoid shell quoting issues and inherit stdio
-          const args = [scriptPath, email, password, name || '', baseUrl];
-          const node = process.execPath; // path to node binary
-          const res = spawnSync(node, args, { stdio: 'ignore' });
-          if (res.error) {
-            warn('Error running admin script');
-          } else if (res.status !== 0) {
-            warn('Admin script encountered an issue');
-          } else {
-            success('Admin user created');
-          }
+            rl.close();
         }
-      }
-    } catch (err) {
-      warn('Setup encountered issues');
-    }
-
-    section('✅ Project Setup Complete!');
-    console.log(`\n${colors.bright}Next steps:${colors.reset}`);
-    console.log(`  cd ${projectName}`);
-    console.log('  npm run dev\n');
-    console.log(`${colors.dim}Dev server: http://localhost:3000${colors.reset}`);
-    console.log('');
-    section('🚀 Deployment Setup');
-    console.log(`${colors.dim}`);
-    console.log('To deploy to Ubuntu server:');
-    console.log('');
-    console.log('1. Install GitHub CLI: https://cli.github.com/');
-    console.log('2. Run: gh auth login');
-    console.log('3. Upload secrets:');
-    if (process.platform === 'win32') {
-      console.log('     .\\upload-env-secrets.ps1');
-    } else {
-      console.log('     ./upload-env-secrets.sh');
-    }
-    console.log('4. Set secrets (gh secret set SERVER_IP, SSH_PRIVATE_KEY)');
-    console.log('5. Push to main: git push origin main');
-    console.log(`${colors.reset}\n`);
-  } catch (error) {
-    console.error(`${colors.red}✗ Error: ${error && error.message ? error.message : error}${colors.reset}`);
-    process.exit(1);
-  }
+        
+    } catch (e) {}
 }
 
-main().catch(error => {
-  console.error('Error:', error && error.message ? error.message : error);
-  process.exit(1);
+
+// ============================================================================
+// V2 Specific Logic
+// ============================================================================
+
+function copyV2(templatePath, projectPath) {
+    status('Copying V2 template files...');
+    // For V2 (Clean Next.js), we copy everything except node_modules, .git, .next
+    const skipNames = ['node_modules', '.git', '.next', 'package-lock.json'];
+    
+    // V2 is already a clean app structure in templates/v2
+    copyRecursive(templatePath, projectPath, { skipNames });
+}
+
+async function setupV2(projectPath, projectName) {
+     // package.json update
+    const packageJsonPath = path.join(projectPath, 'package.json');
+    const packageJson = readJsonFile(packageJsonPath);
+    if (packageJson) {
+      packageJson.name = projectName;
+      packageJson.version = '0.1.0';
+      writeJsonFile(packageJsonPath, packageJson);
+    }
+    
+    process.chdir(projectPath);
+    status('Installing dependencies...');
+    try {
+        execSync('npm install', { stdio: 'inherit' }); // inherit to show progress
+        success('Dependencies installed');
+    } catch(e) {
+        warn('npm install failed');
+    }
+}
+
+// ============================================================================
+// Main
+// ============================================================================
+
+const projectName = process.argv[2] || ".";
+const targetDir = path.resolve(process.cwd(), projectName);
+
+async function main() {
+  clearScreen();
+  section(`🚀 Nexal Setup: ${projectName}`);
+
+  const projectPath = targetDir;
+  if (projectName !== "." && fs.existsSync(projectPath)) {
+    console.error(`${colors.red}✗ Error: Directory already exists: ${projectName}${colors.reset}`);
+    process.exit(1);
+  }
+
+  // Determine Template Version
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const question = (q) => new Promise((resolve) => rl.question(q, resolve));
+
+  console.log(`${colors.bright}Wähle eine Vorlage:${colors.reset}`);
+  console.log(`1) ${colors.cyan}V1${colors.reset} - Full SaaS Starter (MongoDB, Auth, Stripe, Admin, i18n)`);
+  console.log(`2) ${colors.cyan}V2${colors.reset} - Clean Next.js App (Tailwind only)`);
+  console.log('');
+  
+  const answer = (await question('Auswahl [1/2]: ')).trim();
+  rl.close();
+
+  let version = 'v1';
+  if (answer === '2' || answer.toLowerCase() === 'v2') {
+      version = 'v2';
+  }
+
+  status(`Selected: ${version.toUpperCase()}`);
+  
+  ensureDir(projectPath);
+  
+  const templateDir = path.join(__dirname, 'templates', version);
+  
+  if (!fs.existsSync(templateDir)) {
+      console.error(`${colors.red}Template directory not found: ${templateDir}${colors.reset}`);
+      process.exit(1);
+  }
+
+  if (version === 'v1') {
+      copyV1(templateDir, projectPath);
+      await setupV1(projectPath, projectName);
+  } else {
+      copyV2(templateDir, projectPath);
+      await setupV2(projectPath, projectName);
+  }
+
+  section('✅ Setup Complete!');
+  console.log(`\n${colors.bright}Next steps:${colors.reset}`);
+  console.log(`  cd ${projectName}`);
+  console.log('  npm run dev\n');
+}
+
+main().catch(e => {
+    console.error(e);
+    process.exit(1);
 });
