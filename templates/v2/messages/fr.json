@@ -1,0 +1,54 @@
+{
+  "Navigation": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "contact": "Contact",
+    "docs": "Docs",
+    "pricing": "Tarifs"
+  },
+  "Hero": {
+    "badge": "Innover pour l'avenir",
+    "title": "Nous créons des expériences <highlight>numériques</highlight>.",
+    "description": "Lumina est une entreprise technologique tournée vers l'avenir, dédiée à la création de solutions numériques impactantes pour les entreprises du monde entier.",
+    "getStarted": "Prendre contact",
+    "learnMore": "En savoir plus"
+  },
+  "Features": {
+    "title1": "Performance avant tout",
+    "desc1": "Nous avons optimisé chaque aspect de notre flux de travail pour livrer des résultats ultra-rapides.",
+    "title2": "Sécurité par conception",
+    "desc2": "La sécurité n'est pas une arrière-pensée. Elle est intégrée dans notre philosophie fondamentale.",
+    "title3": "Portée mondiale",
+    "desc3": "Connecter les entreprises et les clients au-delà des frontières de manière transparente."
+  },
+  "Footer": {
+    "description": "Lumina Inc. Tous droits réservés.",
+    "imprint": "Mentions légales",
+    "privacy": "Confidentialité",
+    "terms": "CGU"
+  },
+  "About": {
+    "title": "À propos de Lumina",
+    "intro": "Chez Lumina, nous croyons que la technologie doit être un catalyseur, pas une barrière. Notre mission est de simplifier le complexe et d'éclairer la voie à suivre.",
+    "philosophy": "Nous adhérons à une philosophie d'excellence minimaliste.",
+    "valuesTitle": "Nos valeurs",
+    "value1": "Clarté : Nous valorisons une communication claire et un code transparent.",
+    "value2": "Qualité : Nous ne faisons aucun compromis sur nos standards d'ingénierie.",
+    "value3": "Impact : Nous construisons des logiciels qui font une réelle différence."
+  },
+  "Contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Prêt pour votre prochain projet ? Nous serions ravis de vous entendre.",
+    "name": "Nom",
+    "email": "E-mail",
+    "message": "Message",
+    "send": "Envoyer le message"
+  },
+  "Legal": {
+    "privacyTitle": "Politique de confidentialité",
+    "privacyLastUpdated": "Dernière mise à jour",
+    "termsTitle": "Conditions d'utilisation",
+    "imprintTitle": "Mentions légales"
+  }
+}

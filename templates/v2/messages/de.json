@@ -1,54 +1,54 @@
 {
   "Navigation": {
-    "home": "Home",
-    "about": "About",
-    "services": "Services",
-    "contact": "Contact",
-    "docs": "Docs",
-    "pricing": "Pricing"
+    "home": "Startseite",
+    "about": "Über uns",
+    "services": "Leistungen",
+    "contact": "Kontakt",
+    "docs": "Doku",
+    "pricing": "Preise"
   },
   "Hero": {
-    "badge": "Innovating the future",
-    "title": "We build <highlight>digital</highlight> <br> experiences.",
-    "description": "Lumina is a forward-thinking technology company dedicated to creating impactful digital solutions for businesses worldwide.",
-    "getStarted": "Get in Touch",
-    "learnMore": "Learn More"
+    "badge": "Wir gestalten die Zukunft",
+    "title": "Wir entwickeln <highlight>digitale</highlight> <br> Erlebnisse.",
+    "description": "Lumina ist ein zukunftsorientiertes Technologieunternehmen, das sich der Entwicklung wirkungsvoller digitaler Lösungen für Unternehmen weltweit widmet.",
+    "getStarted": "Kontakt aufnehmen",
+    "learnMore": "Mehr erfahren"
   },
   "Features": {
-    "title1": "Performance First",
-    "desc1": "We optimized every aspect of our workflow to deliver blazing fast results.",
-    "title2": "Secure by Design",
-    "desc2": "Security is not an afterthought. It is embedded in our core philosophy.",
-    "title3": "Global Reach",
-    "desc3": "Connecting businesses and customers across borders seamlessly."
+    "title1": "Leistung zuerst",
+    "desc1": "Wir haben jeden Aspekt unseres Arbeitsablaufs optimiert, um blitzschnelle Ergebnisse zu liefern.",
+    "title2": "Sicher durch Design",
+    "desc2": "Sicherheit ist kein nachträglicher Gedanke. Sie ist fest in unserer Philosophie verankert.",
+    "title3": "Globale Reichweite",
+    "desc3": "Wir verbinden Unternehmen und Kunden nahtlos über Grenzen hinweg."
   },
   "Footer": {
-    "description": "Lumina Inc. All rights reserved.",
-    "imprint": "Imprint",
-    "privacy": "Privacy",
-    "terms": "Terms"
+    "description": "Lumina Inc. Alle Rechte vorbehalten.",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB"
   },
   "About": {
-    "title": "About Lumina",
-    "intro": "At Lumina, we believe that technology should be an enabler, not a barrier. Founded in 2024, our mission is to simplify the complex and illuminate the path forward.",
-    "philosophy": "We adhere to a philosophy of minimalist excellence.",
-    "valuesTitle": "Our Values",
-    "value1": "Clarity: We value clear communication and transparent code.",
-    "value2": "Quality: We do not compromise on the standards of our engineering.",
-    "value3": "Impact: We build software that makes a tangible difference."
+    "title": "Über Lumina",
+    "intro": "Bei Lumina glauben wir, dass Technologie ein Wegbereiter sein sollte, kein Hindernis. Unsere Mission ist es, Komplexes zu vereinfachen und den Weg nach vorne zu beleuchten.",
+    "philosophy": "Wir folgen einer Philosophie der minimalistischen Exzellenz.",
+    "valuesTitle": "Unsere Werte",
+    "value1": "Klarheit: Wir schätzen klare Kommunikation und transparenten Code.",
+    "value2": "Qualität: Wir gehen keine Kompromisse bei unseren Standards ein.",
+    "value3": "Wirkung: Wir bauen Software, die einen echten Unterschied macht."
   },
   "Contact": {
-    "title": "Contact Us",
-    "subtitle": "Ready to start your next project? We'd love to hear from you.",
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Bereit für Ihr nächstes Projekt? Wir freuen uns, von Ihnen zu hören.",
     "name": "Name",
-    "email": "Email",
-    "message": "Message",
-    "send": "Send Message"
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "send": "Nachricht senden"
   },
   "Legal": {
-    "privacyTitle": "Privacy Policy",
-    "privacyLastUpdated": "Last updated",
-    "termsTitle": "Terms of Service",
-    "imprintTitle": "Imprint / Impressum"
+    "privacyTitle": "Datenschutzerklärung",
+    "privacyLastUpdated": "Zuletzt aktualisiert",
+    "termsTitle": "Allgemeine Geschäftsbedingungen",
+    "imprintTitle": "Impressum"
   }
 }

@@ -3,7 +3,7 @@ const path = require('path');
 
 const messagesDir = path.join(__dirname, '../messages');
 const sourceFile = path.join(messagesDir, 'en.json');
-const locales = ['de']; // Add other locales here
+const locales = ['de', 'fr']; // Add other locales here
 
 if (!fs.existsSync(sourceFile)) {
     console.error('Source language file (en.json) not found!');

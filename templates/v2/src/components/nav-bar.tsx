@@ -19,7 +19,7 @@ export function NavBar() {
   }, []);
 
   const switchLocale = () => {
-    const nextLocale = locale === 'en' ? 'de' : 'en';
+    const nextLocale = locale === 'en' ? 'de' : locale === 'de' ? 'fr' : 'en';
     router.replace(pathname, {locale: nextLocale});
   };
 

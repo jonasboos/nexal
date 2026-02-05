@@ -314,18 +314,10 @@ async function setupV2(projectPath, projectName) {
 // Main
 // ============================================================================
 
-const projectName = process.argv[2] || ".";
-const targetDir = path.resolve(process.cwd(), projectName);
 
 async function main() {
   clearScreen();
-  section(`🚀 Nexal Setup: ${projectName}`);
-
-  const projectPath = targetDir;
-  if (projectName !== "." && fs.existsSync(projectPath)) {
-    console.error(`${colors.red}✗ Error: Directory already exists: ${projectName}${colors.reset}`);
-    process.exit(1);
-  }
+  section('🚀 Nexal Helper');
 
   // Determine Template Version
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -333,20 +325,42 @@ async function main() {
 
   console.log(`${colors.bright}Wähle eine Vorlage:${colors.reset}`);
   console.log(`1) ${colors.cyan}V1${colors.reset} - Full SaaS Starter (MongoDB, Auth, Stripe, Admin, i18n)`);
-  console.log(`2) ${colors.cyan}V2${colors.reset} - Clean Next.js App (Tailwind only)`);
+  console.log(`2) ${colors.cyan}V2${colors.reset} - Clean Next.js App (Tailwind, i18n, Sitemap) + Scraper`);
   console.log('');
   
   const answer = (await question('Auswahl [1/2]: ')).trim();
-  rl.close();
-
+  
   let version = 'v1';
+  let projectUrl = '';
+  let derivedName = '';
+
   if (answer === '2' || answer.toLowerCase() === 'v2') {
       version = 'v2';
+      projectUrl = (await question('Website URL to process: ')).trim();
+      
+      try {
+          const hostname = new URL(projectUrl.startsWith('http') ? projectUrl : `https://${projectUrl}`).hostname;
+          derivedName = hostname.replace('www.', '').split('.')[0];
+      } catch (e) {
+          derivedName = 'my-nexal-app';
+      }
+      console.log(`${colors.green}Project Name extracted: ${derivedName}${colors.reset}`);
   }
+  
+  rl.close();
+
+  // If V2, use derived name. If V1, use argument or default.
+  const projectName = version === 'v2' ? derivedName : (process.argv[2] || ".");
+  const targetDir = path.resolve(process.cwd(), projectName);
 
   status(`Selected: ${version.toUpperCase()}`);
   
-  ensureDir(projectPath);
+  if (projectName !== "." && fs.existsSync(targetDir)) {
+    console.error(`${colors.red}✗ Error: Directory already exists: ${projectName}${colors.reset}`);
+    process.exit(1);
+  }
+  
+  ensureDir(targetDir);
   
   const templateDir = path.join(__dirname, 'templates', version);
   
@@ -356,11 +370,25 @@ async function main() {
   }
 
   if (version === 'v1') {
-      copyV1(templateDir, projectPath);
-      await setupV1(projectPath, projectName);
+      copyV1(templateDir, targetDir);
+      await setupV1(targetDir, projectName);
   } else {
-      copyV2(templateDir, projectPath);
-      await setupV2(projectPath, projectName);
+      copyV2(templateDir, targetDir);
+      await setupV2(targetDir, projectName);
+      
+      // V2 Specific: Run Go Script
+      console.log(`\n${colors.cyan}Running Go processing script...${colors.reset}`);
+      try {
+          const goScriptPath = path.join(targetDir, 'golang', 'main.go');
+          if (fs.existsSync(goScriptPath)) {
+               console.log(`Executing: go run golang/main.go ${projectUrl}`);
+               execSync(`go run golang/main.go ${projectUrl}`, { cwd: targetDir, stdio: 'inherit' });
+          } else {
+               console.log(`${colors.yellow}Go script not found at ${goScriptPath}, skipping.${colors.reset}`);
+          }
+      } catch (e) {
+           console.log(`${colors.red}Go execution failed: ${e.message}${colors.reset}`);
+      }
   }
 
   section('✅ Setup Complete!');
