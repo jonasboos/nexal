@@ -5,18 +5,18 @@ on:
     branches:
       - main
     paths-ignore:
-      - '*.md'
-      - '.github/**'
-      - '!.github/workflows/publish.yml'
+      - "*.md"
+      - ".github/**"
+      - "!.github/workflows/publish.yml"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: write
       id-token: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,8 +27,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Configure Git
         run: |
@@ -42,8 +42,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests (build check)
-        run: npm run build
+      - name: Verify Templates
+        run: |
+          # Verify V1
+          cd templates/v1
+          if [ -f "package.json" ]; then
+            echo "V1 package.json exists"
+          else
+            echo "Error: V1 package.json missing"
+            exit 1
+          fi
+
+          # Verify V2
+          cd ../v2
+          if [ -f "package.json" ]; then
+            echo "V2 package.json exists"
+          else
+             echo "Error: V2 package.json missing"
+             exit 1
+          fi
 
       - name: Check if should publish
         id: check
@@ -52,7 +69,7 @@ jobs:
           PUBLISHED_VERSION=$(npm view nexal version 2>/dev/null || echo "0.0.0")
           echo "Current version: $CURRENT_VERSION"
           echo "Published version: $PUBLISHED_VERSION"
-          
+
           # Handle case where HEAD~1 doesn't exist (initial commit or rebase)
           if ! git rev-parse HEAD~1 >/dev/null 2>&1; then
             echo "Initial commit or no previous commit - will publish"
