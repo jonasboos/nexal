@@ -1,6 +1,6 @@
 {
   "name": "nexal",
-  "version": "1.0.81",
+  "version": "1.0.82",
   "description": "Nexal CLI - Select and scaffold Next.js templates",
   "main": "index.js",
   "scripts": {
