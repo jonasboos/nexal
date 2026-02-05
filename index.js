@@ -288,6 +288,11 @@ function copyV2(templatePath, projectPath) {
     
     // V2 is already a clean app structure in templates/v2
     copyRecursive(templatePath, projectPath, { skipNames });
+    
+    // Special case for .gitignore (sometimes renamed to gitignore)
+    if (!fs.existsSync(path.join(projectPath, '.gitignore')) && fs.existsSync(path.join(templatePath, 'gitignore'))) {
+        copyFileSync(path.join(templatePath, 'gitignore'), path.join(projectPath, '.gitignore'));
+    }
 }
 
 async function setupV2(projectPath, projectName) {
@@ -379,10 +384,10 @@ async function main() {
       // V2 Specific: Run Go Script
       console.log(`\n${colors.cyan}Running Go processing script...${colors.reset}`);
       try {
-          const goScriptPath = path.join(targetDir, 'golang', 'main.go');
+          const goScriptPath = path.join(targetDir, 'golang', 'cmd', 'krebs-scraper', 'main.go');
           if (fs.existsSync(goScriptPath)) {
-               console.log(`Executing: go run golang/main.go ${projectUrl}`);
-               execSync(`go run golang/main.go ${projectUrl}`, { cwd: targetDir, stdio: 'inherit' });
+               console.log(`Executing: go run golang/cmd/krebs-scraper/main.go -url ${projectUrl}`);
+               execSync(`go run golang/cmd/krebs-scraper/main.go -url ${projectUrl}`, { cwd: targetDir, stdio: 'inherit' });
           } else {
                console.log(`${colors.yellow}Go script not found at ${goScriptPath}, skipping.${colors.reset}`);
           }
